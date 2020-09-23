@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>p{font-size: 1.2em;}
+            </style>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Visão Geral</h1>
+<p>O fim principal do programa é conseguir buscar uma palavra em um arquivo, ambos fornecidos pelo usuário, e 
+em seguida, caso a palavra tenha sido encontrada, armazenar em qual linha cada ocorrência da mesma se deu em 
+uma tabela hash.</p>
+<p>Obviamente o problema inicial era encontrar tal palavra no texto, ao mesmo tempo em que se obtia a informação
+de sua linha, todas as vezes que se repetisse. O segundo desafio era construir uma tabela hash para armezena-la 
+junto a suas informações.</p>
+<p>Seguindo o conceito de TAD foram criadas duas bibliotecas: text.h e hash.h.</p>
+<h2>text.h</h2>
+<p>Responsável por realizar a busca da palavra no texto, coletando a linha e a quantidade de ocorrências da mesma. 
+Esta operação pode ser realizada através da função.</p>
+<p><code>
+    Word getInfo(char fileName[], char word[]);
+</code>
+Que recebe o nome do arquivo e a palavra a ser buscada, retornando uma struct que contém as informações obtidas.<br></p>
+<p>Ela também possui as funções:</p>
+
+<p><code>
+    int getNWord(Word W);
+</code>
+Extrai a quantidade de ocorrências da palavra no texto.</p>
+
+<p><code>
+    int *getWLines(Word W);
+</code> 
+Extrai a linha de cada ocorrência da palavra no texto.</p>
+<p><code>
+    void printWord(Word W);
+</code>
+Imprime na tela as informações da palavra em questão.</p>
+
+<h2>hash.h</h2>
+<p>Responsável por criar a tabela hash e manipula-la.</p>
+<p>Possui as seguintes funções:</p>
+
+<p><code>
+HashTab createHashTab(int Size);
+</code>
+Recebe o tamanho desejado para a tabela, e retorna um struct que a contém.</p>
+
+<p><code>
+    Cell insertInTab(char word[], int wordLines[], int occurrences, HashTab H);
+</code>
+Recebe a palavra a ser armazenada, em quais linhas foi encontrada e o número de ocorrências. 
+Retorna a célula da tabela em que ela foi armazenada.</p>
+
+<p><code>
+    int hash(char word[], HashTab H);
+</code>
+Recebe uma palavra e a hash em que foi ou será armazenada, e calcula seu valor hash de acordo com a 
+função especificada para estre trabalho prático.</p>
+
+<p><code>
+    Cell searchInTab(char word[], HashTab H);
+</code>
+Recebe uma palavra e uma hash. Retorna a célula em que esta palavra está armazenada nesta hash em casos de 
+sucesso, e NULL caso contrário.</p>
+
+<p><code>
+    void printCell(Cell C);
+</code>
+Recebe uma célula de alguma hash e a mprime na tela. Vale ressaltar queChain Position é a 
+posição da palavra na lista encadeada, e para cada ocorrência da palavra ela será
+impressa na tela novamente alterando apenas o valor de Line.</p>
+
+<p><code>
+    void printHash(HashTab H);
+</code>
+Recebe uma hash e a imprime todas suas células na tela.</p>
+
+<p>A realização do trabalho foi interessante no quesito de poder criar uma tabela Hash na prática em conjunto com
+manipulação de arquvos, além de trabalhar o conseito de TAD provando sua utilidade.A principal dificuldade foi
+encontrada na implementação da text.h ao buscar as palavras e ter de armazenar em que linhas se encontravam
+ao mesmo tempo.</p>
+
+<h2>Bibliografia:</h2>
+    <p>Slide disponibilizados na disciplina AEDS 1</p>
+    <p>Backes, André (2012). Linguagem C Completa e Descomplicada.</p> 
+    <p>Ime usp, Tabelas de dispersão (hash tables): https://www.ime.usp.br/~pf/mac0122-2002/aulas/hashing.html"</p>
+</body>
+</html>

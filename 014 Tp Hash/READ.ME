@@ -1,0 +1,6 @@
+Para compilar execute o comando a baixo no diretório deste READ.ME
+gcc -c main.c hash/hash.c text/text.c && gcc main.o hash.o text.o -o prog && prog
+
+O comando faz o link entre a main e as bibliotecas: gcc -c main.c hash/hash.c text/text.c
+Compila os arquivos .o em um executável chamado prog:  gcc main.o hash.o text.o -o prog
+E roda este executável: prog
