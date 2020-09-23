@@ -1,0 +1,5 @@
+abcdeiou => 5
+gdf      => 0
+wasd     => 1
+aegrt    => 2
+gtreo    => 2

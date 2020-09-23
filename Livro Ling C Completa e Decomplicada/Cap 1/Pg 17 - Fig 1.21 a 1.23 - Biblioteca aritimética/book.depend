@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1551321208 source:c:\users\felip\desktop\book\main.c
+	<stdio.h>
+	<stdlib.h>
+	"aritmetica.h"
+
+1551321149 c:\users\felip\desktop\book\aritmetica.h
+
+1553261669 source:c:\users\felip\documents\github\algoritimosandestruturasdedados-i\livro ling c completa e decomplicada\cap 1\pg 17 - fig 1.21 a 1.23 - biblioteca aritimética\aritmetica.c
+	"aritmetica.h"
+
+1553261669 c:\users\felip\documents\github\algoritimosandestruturasdedados-i\livro ling c completa e decomplicada\cap 1\pg 17 - fig 1.21 a 1.23 - biblioteca aritimética\aritmetica.h
+
+1553261669 source:c:\users\felip\documents\github\algoritimosandestruturasdedados-i\livro ling c completa e decomplicada\cap 1\pg 17 - fig 1.21 a 1.23 - biblioteca aritimética\main.c
+	<stdio.h>
+	<stdlib.h>
+	"aritmetica.h"
+

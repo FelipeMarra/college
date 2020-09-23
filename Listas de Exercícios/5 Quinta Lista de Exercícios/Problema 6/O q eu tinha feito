@@ -1,0 +1,10 @@
+        //Se o valor ultima posicao i-1 for maior q o da posicao i
+        //Troque os valores de lugar
+        //if(valores[i-1] > valores[x]){
+            //atual = valores[x];
+            //antecessor = valores[x-1];
+            //valores[i] = antecessor;
+            //valores[i-1] = atual;
+
+
+        //}
