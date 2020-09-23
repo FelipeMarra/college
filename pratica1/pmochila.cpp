@@ -287,6 +287,12 @@ void imprime_lista(Arraylist lista)
 	}
 }
 
+void limparSolucao(int *s, int n)
+{
+	for (size_t i = 0; i < n; i++)
+		s[i] = 0;
+}
+
 /******************************************************************************************/
 /*				CONSTRUTIVOS						  */
 /******************************************************************************************/
@@ -294,34 +300,51 @@ void imprime_lista(Arraylist lista)
 // Constroi uma solucao inicial
 void constroi_solucao(int n, int *s, double *p, double *w, double b, double percentual)
 {
-	double peso = 0;
-	double capacidade = 0;
-	int j, tamRestrito;
+	double capacidadeRestante = b;
+	int tamRestrito;
 	Objeto *o;
 
 	// Limpa solucao
-
+	limparSolucao(s, n);
 	// Cria lista de objetos ordenados
+	Arraylist ordObjs = cria_lista_objetos_ordenada(n, s, p, w);
 
-	//printf("C: %lf\n", b);
+	imprime_lista(ordObjs);
+	printf("Capacidade mochila: %lf\n", b);
 
 	// Constroi solucao elemento a elemento, verificando se cada objeto cabe na capacidade residual da mochila
+	for (size_t i = 0; i < n; i++)
+	{
 
-	// Define o tamanho da lista restrita, ou seja, o percentual mais interessantes
-
-	// Sorteia posicao aleatoria da lista residual
-
-	// Recupera objeto
-
-	// Se objeto ainda nao esta na mochila e cabe nela, adiciona objeto a mochila
-
-	// Remove objeto da lista, pois ja foi testado
+		// Define o tamanho da lista restrita, ou seja, o percentual mais interessantes
+		tamRestrito = percentual * n;
+		// Sorteia posicao aleatoria da lista residual
+		int ranIndex = (int)rand() / RAND_MAX * tamRestrito;
+		// Recupera objeto
+		o = (Objeto *)arraylist_get(ordObjs, ranIndex);
+		// Se objeto ainda nao esta na mochila e cabe nela, adiciona objeto a mochila
+		int pos = o->id;
+		int proxCapacidade = capacidadeRestante - o->peso;
+		if (s[pos] == 0 && proxCapacidade >= 0)
+		{
+			s[pos] = 1;
+			capacidadeRestante = proxCapacidade;
+		}
+		// Remove objeto da lista, pois ja foi testado
+		arraylist_remove_index(ordObjs, pos);
+	}
 }
 
 // Constroi uma solucao inicial aleatoria
 void constroi_solucao_aleatoria(int n, int *s, double *p, double *w, double b)
 {
 	// Limpa solucao
-
+	limparSolucao(s, n);
 	// Insere objetos aleatoriamente
+	int ranTamRestrito = (int)rand() / RAND_MAX * n;
+	for (size_t i = 0; i < ranTamRestrito; i++)
+	{
+		int ranIndex = (int)rand() / RAND_MAX * ranTamRestrito;
+		s[ranIndex] = 1;
+	}
 }
