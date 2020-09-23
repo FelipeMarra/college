@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="window_main">
+    <property name="can_focus">False</property>
+    <property name="window_position">center-always</property>
+    <property name="default_width">720</property>
+    <property name="default_height">480</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkLayout" id="layout_menu">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="width">720</property>
+        <property name="height">480</property>
+        <child>
+          <object class="GtkLabel" id="label_tittle">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">BEST TP DE SUDOKU  </property>
+            <property name="justify">center</property>
+            <attributes>
+              <attribute name="font-desc" value="Showcard Gothic 20"/>
+              <attribute name="foreground" value="#a4a400000000"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">200</property>
+            <property name="y">100</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_randon_load_game">
+            <property name="label" translatable="yes">Load Randon Game</property>
+            <property name="width_request">175</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_btn_randon_load_game_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">275</property>
+            <property name="y">180</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_best_sudoku_times">
+            <property name="label" translatable="yes">Best Sudoku Times</property>
+            <property name="width_request">175</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_btn_best_sudoku_times_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">275</property>
+            <property name="y">260</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_load_save">
+            <property name="label" translatable="yes">Load Save By Name</property>
+            <property name="width_request">175</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_btn_load_save_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">275</property>
+            <property name="y">220</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
