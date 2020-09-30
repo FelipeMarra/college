@@ -448,7 +448,7 @@ void busca_local_melhor_aprimorante(int n, int *s, double *p, double *w, double 
 	while (melhoria)
 	{
 		melhoria = FALSE;
-		loopMaxFO = -10000;
+		loopMaxFO = -DBL_MAX;
 		//Passe pelos vizinhos da solução corrente (climb a new hill)
 		for (int i = 0; i < n; i++)
 		{
@@ -482,7 +482,7 @@ void busca_local_randomica(int n, int *s, double *p, double *w, double b, int it
 	for (size_t i = 0; i < count; i++)
 	{
 		// parte/todo * máximo valor desejado
-		randomBit = (int)((float)rand() / RAND_MAX * n);
+		randomBit = ((float)rand() / RAND_MAX) * n;
 		//troca bit aleatorio
 		troca_bit(s, randomBit);
 		loopFO = calcula_fo(s, n, p, w, b);
