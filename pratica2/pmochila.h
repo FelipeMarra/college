@@ -1,10 +1,11 @@
 #include <stdio.h>
-#include <math.h>
+//#include <math.h>
 #include <sys/time.h>
-#include <sys/resource.h>
-#include <iostream>
-#include <limits.h>
+//#include <sys/resource.h>
+//#include <iostream>
+//#include <limits.h>
 #include <float.h>
+#include <stdbool.h>
 #include "arraylist.h"
 
 #define MAX(x,y) ((x)<(y) ? (y) : (x))
