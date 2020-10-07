@@ -300,6 +300,30 @@ void melhor_vizinho_N1(int n, int *s, double *p, double *w, double b)
 	double fo_max;
 	double fo_vizinho;
 	int melhor_bit;
+
+	calcula_fo(s, n, p, w, b);
+
+	fo_max = -DBL_MAX;
+
+	for (size_t j = 0; j < n; j++)
+	{
+		troca_bit(s, j);
+
+		fo_vizinho = calcula_fo(s, n, p, w, b);
+
+		if (fo_vizinho > fo_max)
+		{
+			fo_max = fo_vizinho;
+			melhor_bit = j;
+		}
+
+		troca_bit(s, j);
+	}
+
+	if (fo_max > fo_original)
+	{
+		troca_bit(s, melhor_bit);
+	}
 }
 
 /* aplica busca local pela estrategia do melhor aprimorante */
@@ -307,18 +331,61 @@ void melhor_vizinho_N2(int n, int *s, double *p, double *w, double b)
 {
 	double fo_max, fo_vizinho;
 	int melhor_bit_1, melhor_bit_2;
+
+	calcula_fo(s, n, p, w, b);
+
+	fo_max = -DBL_MAX;
+
+	for (size_t i = 0; i < n; i++)
+	{
+		troca_bit(s, i);
+
+		for (size_t j = i + 1; j < n; j++)
+		{
+			troca_bit(s, j);
+
+			fo_vizinho = calcula_fo(s, n, p, w, b);
+
+			if (fo_vizinho > fo_max)
+			{
+				fo_max = fo_vizinho;
+				melhor_bit_1 = i;
+				melhor_bit_2 = j;
+			}
+
+			troca_bit(s, j);
+		}
+
+		troca_bit(s, i);
+	}
+
+	if (fo_max > fo_original)
+	{
+		troca_bit(s, melhor_bit_1);
+		troca_bit(s, melhor_bit_2);
+	}
 }
 
 void vizqqN1(int n, int *s, double *p, double *w, double b)
 {
-
-	printf("Vizinho qq N1 - FO = %lf\n", calcula_fo(s, n, p, w, b));
+	int index;
+	index = ((float)rand() / RAND_MAX) * n;
+	troca_bit(s, index);
 }
 
 void vizqqN2(int n, int *s, double *p, double *w, double b)
 {
+	int i1, i2;
 
-	printf("Vizinho qq N2 - FO = %lf\n", calcula_fo(s, n, p, w, b));
+	i1 = ((float)rand() / RAND_MAX) * n;
+	i2 = ((float)rand() / RAND_MAX) * n;
+	while (i1 == i2)
+	{
+		i2 = ((float)rand() / RAND_MAX) * n;
+	}
+
+	troca_bit(s, i1);
+	troca_bit(s, i2);
 }
 
 /******************************************************************************************/
@@ -593,9 +660,69 @@ void busca_local_randomica(int n, int *s, double *p, double *w, double b, int it
 /* aplica metaheuristica VND */
 void VND(int n, int *s, double *p, double *w, double b)
 {
+	int k;
+	double fo_s;
+
+	while (k <= 2)
+	{
+		fo_s = calcula_fo(s, n, p, w, b);
+
+		switch (k)
+		{
+		case 1:
+			melhor_vizinho_N1(n, s, p, w, b);
+			break;
+		case 2:
+			melhor_vizinho_N2(n, s, p, w, b);
+			break;
+		default:
+			break;
+		}
+		if (calcula_fo(s, n, p, w, b) > fo_s)
+		{
+			k = 1;
+		}
+		else
+			k++;
+	}
 }
 
 /* aplica metaheuristica VNS */
 void VNS(int n, int *s, double *p, double *w, double b, int iter_max)
 {
+	int iter = 0;
+	int k;
+	double fo, fosl;
+	int *sl = (int *)malloc(n * sizeof(int));
+	
+	fo = calcula_fo(s,n,p,w,b);
+	
+	while (iter < iter_max) {
+		k = 1;
+		while(k <= 2)
+		{
+			for (int i = 0; i < n; i++) sl[i] = s[i];
+			
+			switch(k){ //Gere um vizinho qualquer na vizinhanca corrente
+				case 1: vizqqN1(n, sl, p, w, b);
+					break;
+				case 2: vizqqN2(n, sl, p, w, b);
+					break;
+			}
+			busca_local_melhor_aprimorante(n,sl,p,w,b);
+			
+			fosl = calcula_fo(sl,n,p,w,b);
+			
+			if (fosl > fo)
+			{
+				printf("Vizinho s'' melhor! FO = %lf\n", fosl);
+				iter = 0;
+				for (int i = 0; i < n; i++) s[i] = sl[i];
+				fo = fosl;
+				k = 1;
+			}
+			else k++;
+		}
+		iter++;
+	}
 }
