@@ -836,9 +836,34 @@ void VNS(int n, int *s, double *p, double *w, double b, int iter_max)
 	}
 }
 
+// int n;			// numero de objetos
+// double b;		// capacidade da mochila
+// int *s;			// vetor solucao corrente
+// int *s_star;	// vetor melhor solucao
+// double *w;		// vetor de peso de cada objeto
+// double *p;		// vetor de utilidade de cada objeto
+
 /* aplica metaheuristica Multi Start */
 void MultiStart(int n, int *s, double *p, double *w, double b, int iter_max)
 {
+	double f_star = -DBL_MAX;
+	double f_current = -DBL_MAX;
+	int *s_star = (int *) malloc(n * sizeof(int));
+	for (size_t i = 0; i < iter_max; i++)
+	{
+		//Solução aleatória
+		constroi_solucao_aleatoria(n, s, p, w, b);
+		//Refinamento
+		busca_local_melhor_aprimorante(n, s, p, w, b);
+		//Seleção da melhor
+		f_current = calcula_fo(s, n, p, w, b);
+		if(f_current > f_star){
+			for (int i = 0; i < n; i++) s_star[i] = s[i];
+			f_star = f_current;
+		}
+	}
+	//Corrente vira a melhor
+	for (int i = 0; i < n; i++) s[i] = s_star[i];
 }
 
 /* aplica metaheuristica ILS */

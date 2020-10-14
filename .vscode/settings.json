@@ -2,6 +2,7 @@
     "files.associations": {
         "*.ui": "xml",
         "*.c": "c",
-        "random": "cpp"
+        "random": "cpp",
+        "array": "cpp"
     }
 }
