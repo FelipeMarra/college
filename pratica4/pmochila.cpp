@@ -417,10 +417,21 @@ void vizqqN2(int n, int *s, double *p, double *w, double b)
 	printf("Vizinho qq N2 - FO = %lf\n", calcula_fo(s, n, p, w, b));
 }
 
-void perturbacao(int n, int *s, double *p, double *w, double b, double pert)
+void perturbacao(int n, int *s, double *p, double *w, double b, int noImprovementIterations)
 {
 	// altera x %  dos bits, a partir de uma posicao aleatoria
-	int pos, bits;
+	int pos;
+	int bits = 3;
+	if (noImprovementIterations > 5)
+	{
+		bits += noImprovementIterations - 5;
+		bits = bits > n ? n : bits;
+	}
+	for (size_t i = 0; i < bits; i++)
+	{
+		pos = ((float)rand() / RAND_MAX) * n;
+		troca_bit(s, pos);
+	}
 }
 
 /******************************************************************************************/
@@ -848,7 +859,7 @@ void MultiStart(int n, int *s, double *p, double *w, double b, int iter_max)
 {
 	double f_star = -DBL_MAX;
 	double f_current = -DBL_MAX;
-	int *s_star = (int *) malloc(n * sizeof(int));
+	int *s_star = (int *)malloc(n * sizeof(int));
 	for (size_t i = 0; i < iter_max; i++)
 	{
 		//Solução aleatória
@@ -857,16 +868,53 @@ void MultiStart(int n, int *s, double *p, double *w, double b, int iter_max)
 		busca_local_melhor_aprimorante(n, s, p, w, b);
 		//Seleção da melhor
 		f_current = calcula_fo(s, n, p, w, b);
-		if(f_current > f_star){
-			for (int i = 0; i < n; i++) s_star[i] = s[i];
+		if (f_current > f_star)
+		{
+			for (int i = 0; i < n; i++)
+				s_star[i] = s[i];
 			f_star = f_current;
 		}
 	}
 	//Corrente vira a melhor
-	for (int i = 0; i < n; i++) s[i] = s_star[i];
+	for (int i = 0; i < n; i++)
+		s[i] = s_star[i];
 }
 
 /* aplica metaheuristica ILS */
 void ILS(int n, int *s, double *p, double *w, double b, int iter_max)
 {
+	int noImprovementIterations = 0;
+	int pertubationLevel = 3;
+	int *s_current = (int *)malloc(n * sizeof(int));
+	double f_current;
+	double f_star;
+
+	//Create first s
+	constroi_solucao(n, s, p, w, b, 0);
+	melhor_vizinho_N2(n, s, p, w, b);
+	f_star = calcula_fo(s, n, p, w, b);
+
+	while (noImprovementIterations < iter_max)
+	{
+		//s_current = s
+		for (int i = 0; i < n; i++)
+			s_current[i] = s[i];
+		//perturbate and refine s_current
+		perturbacao(n, s_current, p, w, b, noImprovementIterations);
+		busca_local_melhor_aprimorante_N2(n, s_current, p, w, b);
+		//s_current is better?
+		f_current = calcula_fo(s_current, n, p, w, b);
+		if (f_current > f_star)
+		{
+			// s = s_current
+			for (int i = 0; i < n; i++)
+				s_current[i] = s[i];
+			f_star = f_current;
+			noImprovementIterations = 0;
+		}
+		else
+		{
+			noImprovementIterations++;
+		}
+	}
 }
