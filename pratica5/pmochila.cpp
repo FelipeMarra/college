@@ -582,6 +582,62 @@ void constroi_solucao_aleatoria(int n, int *s, double *p, double *w, double b)
 // Constroi uma solucao inicial
 void constroi_solucao_grasp(int n, int *s, double *p, double *w, double b, double alfa)
 {
+	double peso = 0;
+	double capacidade = 0;
+	int j, tamRestrito;
+	double value;
+	Objeto *o, *o1, *o2;
+
+	// Limpa solucao
+	for (int j = 0; j < n; j++)
+		s[j] = 0;
+
+	// Cria lista de objetos ordenados
+	Arraylist objetosOrd = cria_lista_objetos_ordenada(n, s, p, w);
+	//imprime_lista(objetosOrd);
+
+	// Constroi solucao elemento a elemento, verificando se cada objeto cabe na capacidade residual da mochila
+	while (arraylist_size(objetosOrd) > 0 && peso < b)
+	{
+
+		// Zera tam restrito
+		tamRestrito = 0;
+
+		// Define o tamanho da lista restrita, ou seja, os alfa % mais interessantes
+
+		// Recupera objeto
+		o1 = (Objeto *)arraylist_get(objetosOrd, 0);
+		o2 = (Objeto *)arraylist_get(objetosOrd, arraylist_size(objetosOrd) - 1);
+		//printf("cmax: %.2lf   cmin: %.2lf\n", );
+		value = o1->profit - alfa * (o1->profit - o2->profit);
+		//printf("Valor referencia: %.2lf\n", value);
+
+		for (int i = 0; i < arraylist_size(objetosOrd); i++)
+		{
+			o = (Objeto *)arraylist_get(objetosOrd, i);
+			if (o->profit >= value)
+				tamRestrito++;
+			else
+				break;
+		}
+		//printf("Tam restrito: %d\n", tamRestrito);
+
+		// Sorteia posicao aleatoria da lista residual
+		j = (int)((float)rand() / RAND_MAX * tamRestrito);
+
+		// Recupera objeto
+		o = (Objeto *)arraylist_get(objetosOrd, j);
+
+		// Se objeto ainda nao esta na mochila e cabe nela, adiciona objeto a mochila
+		if (s[o->id] != 1 && peso + o->peso <= b)
+		{
+			s[o->id] = 1;
+			peso += o->peso;
+		}
+
+		// Remove objeto da lista, pois ja foi testado
+		arraylist_remove_index(objetosOrd, j);
+	}
 }
 
 /******************************************************************************************/
@@ -930,5 +986,38 @@ void ILS(int n, int *s, double *p, double *w, double b, int iter_max)
 /* aplica metaheuristica GRASP */
 void grasp(int n, int *s, double *p, double *w, double b, int iter_max, double alfa)
 {
-	
+	int *sl;
+	double fo_star = -DBL_MAX;
+
+	// cria solucao auxiliar
+	sl = (int *)malloc(n * sizeof(int));
+
+	// Enquanto melhoria
+	for (int i = 0; i < iter_max; i++)
+	{
+
+		// Limpa solucao
+		for (int j = 0; j < n; j++)
+			sl[j] = 0;
+
+		// Constroi solucao parcialmente gulosa
+		constroi_solucao_grasp(n, sl, p, w, b, alfa);
+		printf("solucao construida: %lf\t", calcula_fo(sl, n, p, w, b));
+
+		// Aplica busca local na solucao construida
+		VND(n, sl, p, w, b);
+		printf("solucao refinada: %lf\n", calcula_fo(sl, n, p, w, b));
+
+		// Atualiza melhor solucao
+		if (calcula_fo(sl, n, p, w, b) > fo_star)
+		{
+
+			// copia em s a melhor solucao
+			for (int i = 0; i < n; i++)
+				s[i] = sl[i];
+
+			// atualiza fo
+			fo_star = calcula_fo(sl, n, p, w, b);
+		}
+	}
 }
