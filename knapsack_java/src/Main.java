@@ -5,9 +5,9 @@ import utils.Instance;
 public class Main {
 	public static void main(String[] args) {
 		int choice = 0;
-		
+		Instance instance = Instance.getInstance();
 		//Main menu
-		Instance.read();
+		instance.read();
 		do {
 		Console.log("0 - close");
 		Console.log("1 - new instance");
@@ -19,7 +19,7 @@ public class Main {
 			System.exit(0);
 			break;
 		case 1:
-			Instance.read();
+			instance.read();
 			break;
 		case 2:
 			Grasp.run();
