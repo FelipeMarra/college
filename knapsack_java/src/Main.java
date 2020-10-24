@@ -6,8 +6,12 @@ public class Main {
 	public static void main(String[] args) {
 		int choice = 0;
 		Instance instance = Instance.getInstance();
-		//Main menu
+		//Welcome
+		Console.log("Welcome");
+		Console.log("Before any algorithm you need to provide an instance");
+		Console.log(instance.instanceIsNotNull());
 		instance.read();
+		//Main menu
 		do {
 		Console.log("0 - close");
 		Console.log("1 - new instance");

@@ -1,7 +1,6 @@
 package utils;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,7 +24,11 @@ public class Instance {
 	ArrayList<Double> p = new ArrayList<Double>();// objects profit
 	double fo; // current fo
 	double fo_star; // best fo
-
+	
+	public boolean instanceIsNotNull() {
+		return n != 0;
+	}
+	
 	public void read() {
 		Console.log("Type the path: ");
 		String path = Console.readString();
@@ -78,13 +81,13 @@ public class Instance {
 	}
 	
 	private String arrayCharToString(ArrayList<Character> array) {
-		char[] ch = new char[3];
+		char[] ch = new char[20];
 		int count = 0;
-		for(Character c : array) {
+		for (Character c : array) {
 			ch[count] = c;
 			count++;
 		}
-		String str =  new String(ch);
+		String str = new String(ch);
 		return str.trim();
 	}
 	
