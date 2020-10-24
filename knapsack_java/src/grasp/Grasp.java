@@ -1,10 +1,15 @@
 package grasp;
 
 import utils.Console;
+import utils.Instance;
 
 public class Grasp {
-	public static void run() {
-		Console.log("Running");
-		return;
+	Instance instance = Instance.getInstance();
+	public void run() {
+		if(instance.instanceIsNull()) {
+			return;
+		}
+		Console.log("Running Grasp: ");
+		
 	}
 }

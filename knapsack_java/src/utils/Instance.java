@@ -12,23 +12,26 @@ public class Instance {
 	public static synchronized Instance getInstance() {
 		if (instance == null)
 			instance = new Instance();
-
+		//Initialize bes fo
+		instance.s_star.setFo(-Double.MAX_VALUE);
 		return instance;
 	}
 
-	int n;// number of objects
-	double b;// knapsack capacity
-	ArrayList<Integer> s = new ArrayList<Integer>();// current solution
-	ArrayList<Integer> s_star = new ArrayList<Integer>();// best solution
-	ArrayList<Double> w = new ArrayList<Double>();// objects weight
-	ArrayList<Double> p = new ArrayList<Double>();// objects profit
-	double fo; // current fo
-	double fo_star; // best fo
-	
-	public boolean instanceIsNotNull() {
-		return n != 0;
+	private int n;// number of objects
+	private double b;// knapsack capacity
+	public Solution s = new Solution();// current solution
+	public Solution s_star = new Solution();// best solution
+	private ArrayList<Double> w = new ArrayList<Double>();// objects weight
+	private ArrayList<Double> p = new ArrayList<Double>();// objects profit
+
+	public boolean instanceIsNull() {
+		if (n == 0) {
+			Console.log("ERROR 404 - INSTANCE NOT FOUND");
+			return true;
+		}
+		return false;
 	}
-	
+
 	public void read() {
 		Console.log("Type the path: ");
 		String path = Console.readString();
@@ -38,33 +41,33 @@ public class Instance {
 
 			int line = 0;
 			int c = 0;
-			//Space = 32, \n = 13
+			// Space = 32, \n = 13
 			ArrayList<Character> current = new ArrayList<Character>();
 			while (c != -1) {
 				c = readFile.read();
-				//Input 1
-				if(c == 32) {
-					if(line == 0) {
+				// Input 1
+				if (c == 32) {
+					if (line == 0) {
 						n = arrayCharToInt(current);
-					}else if(line > 0 && line < n+1){
+					} else if (line > 0 && line < n + 1) {
 						p.add(arrayCharToDouble(current));
-					}else {
+					} else {
 						s.add(arrayCharToInt(current));
 					}
 					current.clear();
-				//Input 2
-				}else if(c == 13){
-					if(line == 0) {
+					// Input 2
+				} else if (c == 13) {
+					if (line == 0) {
 						b = arrayCharToInt(current);
-					}else if(line > 0 && line < n+1){
+					} else if (line > 0 && line < n + 1) {
 						w.add(arrayCharToDouble(current));
-					}else {
+					} else {
 						s.add(arrayCharToInt(current));
 					}
 					current.clear();
 					line++;
-				}else if(c != 10){
-					current.add((char)c);
+				} else if (c != 10) {
+					current.add((char) c);
 				}
 			}
 			Console.log("n: " + n);
@@ -77,7 +80,7 @@ public class Instance {
 			System.err.printf("Something went wrong: %s.\n", e.getMessage());
 		}
 	}
-	
+
 	private String arrayCharToString(ArrayList<Character> array) {
 		char[] ch = new char[20];
 		int count = 0;
@@ -88,15 +91,32 @@ public class Instance {
 		String str = new String(ch);
 		return str.trim();
 	}
-	
+
 	private int arrayCharToInt(ArrayList<Character> array) {
 		String s = arrayCharToString(array);
 		return Integer.parseInt(s);
 	}
-	
+
 	private double arrayCharToDouble(ArrayList<Character> array) {
 		String s = arrayCharToString(array);
 		return Double.parseDouble(s);
+	}
+
+	//Getters
+	public int getN() {
+		return n;
+	}
+
+	public double getB() {
+		return b;
+	}
+
+	public ArrayList<Double> getW() {
+		return w;
+	}
+
+	public ArrayList<Double> getP() {
+		return p;
 	}
 
 }

@@ -25,7 +25,8 @@ public class Main {
 			instance.read();
 			break;
 		case 2:
-			Grasp.run();
+			Grasp grasp = new Grasp();
+			grasp.run();
 			break;
 		}
 		}while(choice != 0);
