@@ -9,7 +9,6 @@ public class Main {
 		//Welcome
 		Console.log("Welcome");
 		Console.log("Before any algorithm you need to provide an instance");
-		Console.log(instance.instanceIsNotNull());
 		instance.read();
 		//Main menu
 		do {

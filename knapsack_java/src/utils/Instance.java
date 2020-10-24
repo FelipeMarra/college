@@ -45,7 +45,6 @@ public class Instance {
 				//Input 1
 				if(c == 32) {
 					if(line == 0) {
-						Console.log("LINE 0");
 						n = arrayCharToInt(current);
 					}else if(line > 0 && line < n+1){
 						p.add(arrayCharToDouble(current));
@@ -56,7 +55,6 @@ public class Instance {
 				//Input 2
 				}else if(c == 13){
 					if(line == 0) {
-						Console.log("LINE 0");
 						b = arrayCharToInt(current);
 					}else if(line > 0 && line < n+1){
 						w.add(arrayCharToDouble(current));
