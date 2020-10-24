@@ -12,8 +12,7 @@ public class Instance {
 	public static synchronized Instance getInstance() {
 		if (instance == null)
 			instance = new Instance();
-		//Initialize bes fo
-		instance.s_star.setFo(-Double.MAX_VALUE);
+
 		return instance;
 	}
 
@@ -41,11 +40,12 @@ public class Instance {
 
 			int line = 0;
 			int c = 0;
-			// Space = 32, \n = 13
+
 			ArrayList<Character> current = new ArrayList<Character>();
+
 			while (c != -1) {
 				c = readFile.read();
-				// Input 1
+				// Input 1, Space = 32
 				if (c == 32) {
 					if (line == 0) {
 						n = arrayCharToInt(current);
@@ -55,7 +55,7 @@ public class Instance {
 						s.add(arrayCharToInt(current));
 					}
 					current.clear();
-					// Input 2
+				// Input 2, \n = 13
 				} else if (c == 13) {
 					if (line == 0) {
 						b = arrayCharToInt(current);
@@ -64,22 +64,32 @@ public class Instance {
 					} else {
 						s.add(arrayCharToInt(current));
 					}
+
+					//Reset current, increment line counter
 					current.clear();
 					line++;
+				//Line Feed = 10
 				} else if (c != 10) {
 					current.add((char) c);
 				}
 			}
+
 			Console.log("n: " + n);
 			Console.log("b: " + b);
 			Console.log("s: " + s);
 			Console.log("w: " + w);
 			Console.log("p: " + p);
+			
+			//close file and reset best fo
 			file.close();
+			resetFo_star();
+	
 		} catch (IOException e) {
 			System.err.printf("Something went wrong: %s.\n", e.getMessage());
 		}
 	}
+	
+	//Methods to convert the char array we reading 
 
 	private String arrayCharToString(ArrayList<Character> array) {
 		char[] ch = new char[20];
@@ -100,6 +110,12 @@ public class Instance {
 	private double arrayCharToDouble(ArrayList<Character> array) {
 		String s = arrayCharToString(array);
 		return Double.parseDouble(s);
+	}
+	
+	//Other Methods
+
+	public void resetFo_star() {
+		instance.s_star.setFo(-Double.MAX_VALUE);
 	}
 
 	//Getters
