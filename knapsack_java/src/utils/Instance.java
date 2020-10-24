@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,7 +23,9 @@ public class Instance {
 	public Solution s_star = new Solution();// best solution
 	private ArrayList<Double> w = new ArrayList<Double>();// objects weight
 	private ArrayList<Double> p = new ArrayList<Double>();// objects profit
-
+	public int iter_max;
+	public double alfa;
+	
 	public boolean instanceIsNull() {
 		if (n == 0) {
 			Console.log("ERROR 404 - INSTANCE NOT FOUND");
@@ -113,12 +116,49 @@ public class Instance {
 	}
 	
 	//Other Methods
-
+	
+	public void setIterMax() {
+		Console.log("The maximum of iterations: ");
+		iter_max = Console.readInt();
+	}
+	
+	public void setAlfa() {
+		Console.log("The maximum of iterations: ");
+		alfa = Console.readInt();
+	}
+	
 	public void resetFo_star() {
 		instance.s_star.setFo(-Double.MAX_VALUE);
 	}
+	
+	public ArrayList<KnapsackObject> getSortedObjects(){
+		ArrayList<KnapsackObject> sortedObjects = new ArrayList<KnapsackObject>();
+		for(int i = 0; i < n; i++) {
+			double wheight = w.get(i);
+			double profity = p.get(i);
+			int id = i;
+			KnapsackObject obj = new KnapsackObject(wheight, profity, id);
+			sortedObjects.add(obj);
+		}
+		sortedObjects.sort(new Comparator<KnapsackObject>() {
+	        @Override
+	        public int compare(KnapsackObject obj1, KnapsackObject obj2)
+	        {
+	            return  Integer.compare(obj1.getId(), obj2.getId());
+	        }
+		});
+		return sortedObjects;
+	}
 
-	//Getters
+	//Getters & setters,
+	public Solution getS() {
+		return s;
+	}
+
+	public void setS(Solution s) {
+		this.s = s;
+	}
+
 	public int getN() {
 		return n;
 	}

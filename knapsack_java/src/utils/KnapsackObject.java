@@ -1,24 +1,30 @@
 package utils;
 
 public class KnapsackObject {
-	public KnapsackObject(double weight, double utility, double profit, int id) {
+	public KnapsackObject(double weight, double profit, int id) {
 		this.weight = weight;
-		this.utility = utility;
 		this.profit = profit;
-		setId(id);
+		this.id = id;
 	}
 
 	double weight;
 	double utility;
 	double profit;
 	private int id;
+	
+	public double getWeight() {
+		return weight;
+	}
+
+	public double getUtility() {
+		return utility;
+	}
+
+	public double getProfit() {
+		return profit;
+	}
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		if(id == 0 || id == 1)
-			this.id = id;
 	}
 }

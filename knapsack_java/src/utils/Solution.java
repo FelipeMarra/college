@@ -3,6 +3,12 @@ package utils;
 import java.util.ArrayList;
 
 public class Solution {
+	public Solution(){};
+	
+	public Solution(int solutionSize){
+		initSolution(solutionSize);
+	}
+	
 	private ArrayList<Integer> s = new ArrayList<Integer>();
 	private double fo;
 	
@@ -10,8 +16,17 @@ public class Solution {
 	Instance instance = Instance.getInstance();
 	
 	//Methods
-	public ArrayList<Integer> getS() {
-		return s;
+	private void initSolution(int size) {
+		for(int i = 0; i < size; i++)
+			s.add(0);
+	}
+
+	public Integer getIndex(int index) {
+		return s.get(index);
+	}
+	
+	public Integer setIndex(int index, int value) {
+		return s.set(index, value);
 	}
 	
 	public void add(int i) {
