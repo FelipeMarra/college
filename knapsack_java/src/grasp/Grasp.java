@@ -55,10 +55,6 @@ public class Grasp {
 		
 		//Create list of ordered objects
 		ArrayList<KnapsackObject> sortedObjs = instance.getSortedObjects();
-		
-		for(KnapsackObject o : sortedObjs) {
-			Console.log("Obj " + o.getId() + "PROFIT " + o.getProfit());
-		}
 
 		//imprime_lista(objetosOrd);
 
@@ -72,7 +68,7 @@ public class Grasp {
 			KnapsackObject worstObj = sortedObjs.get(sortedObjs.size() - 1);
 			
 			value = bestObj.getProfit() - instance.alfa * (bestObj.getProfit() - worstObj.getProfit());
-			Console.log("Reference value " + value);
+			//Console.log("Reference value " + value);
 
 			for (int i = 0; i < sortedObjs.size(); i++){
 				KnapsackObject obj = sortedObjs.get(i);
@@ -82,12 +78,12 @@ public class Grasp {
 					break;
 			}
 
-			Console.log("RESTRIC SIZE " + restrictSize + " SIZE OF LIST " + sortedObjs.size());
+			//Console.log("RESTRIC SIZE " + restrictSize + " SIZE OF LIST " + sortedObjs.size());
 			//Sort random position from residual list
 			int max = instance.getN();
 			int rand = new Random().nextInt(max);
 			j = rand/max * restrictSize;
-			Console.log("RAND INDEX " + j);
+			//Console.log("RAND INDEX " + j);
 			
 			KnapsackObject randObj = sortedObjs.get(j);
 
