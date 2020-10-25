@@ -12,9 +12,6 @@ public class Solution {
 	private ArrayList<Integer> s = new ArrayList<Integer>();
 	private double fo;
 	
-	//Controllers
-	Instance instance = Instance.getInstance();
-	
 	//Methods
 	private void initSolution(int size) {
 		for(int i = 0; i < size; i++)
@@ -47,24 +44,6 @@ public class Solution {
 	
 	public void setFo(Double newFo) {
 		fo = newFo;
-	}
-
-	public double calculateFo(){
-		double foValue;
-		double utility = 0, weight = 0, penality = 0;
-		
-		for(int i = 0; i < instance.getN(); i++) {
-			if(s.get(i).equals(1)) {
-				utility += instance.getP().get(i);
-				weight += instance.getW().get(i);
-			}
-			penality += instance.getW().get(i);
-		}
-
-
-		foValue = utility - penality * Double.max(0, weight - instance.getB());
-
-		return foValue;
 	}
 	
 }

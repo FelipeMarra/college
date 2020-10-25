@@ -1,7 +1,7 @@
 package grasp;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 import utils.Console;
 import utils.Instance;
 import utils.KnapsackObject;
@@ -27,20 +27,20 @@ public class Grasp {
 
 			// Build partially greedy solution
 			sl = buildGraspSolution();
-			Console.log("solucao construida: " + sl.calculateFo());
+			Console.log("solucao construida: " + instance.calculateFo(sl));
 
 			//Apply local search to the built solution
 			//VND(n, sl, p, w, b);
-			Console.log("solucao refinada: " + sl.calculateFo());
+			Console.log("solucao refinada: " + instance.calculateFo(sl));
 
 			//Update best solution
-			if (sl.calculateFo() > fo_star) {
+			if (instance.calculateFo(sl) > fo_star) {
 
 				//Change s to the best solution
 				instance.setS(sl);
 
 				//update fo
-				fo_star = sl.calculateFo();
+				fo_star = instance.calculateFo(sl);
 			}
 		}
 	}
@@ -55,7 +55,11 @@ public class Grasp {
 		
 		//Create list of ordered objects
 		ArrayList<KnapsackObject> sortedObjs = instance.getSortedObjects();
-	
+		
+		for(KnapsackObject o : sortedObjs) {
+			Console.log("Obj " + o.getId() + "PROFIT " + o.getProfit());
+		}
+
 		//imprime_lista(objetosOrd);
 
 		//Build a solution element by element, checking if each object fits in the residual capacity of the backpack 
@@ -71,16 +75,20 @@ public class Grasp {
 			Console.log("Reference value " + value);
 
 			for (int i = 0; i < sortedObjs.size(); i++){
-				KnapsackObject o = sortedObjs.get(i);
-				if (o.getProfit() >= value)
+				KnapsackObject obj = sortedObjs.get(i);
+				if (obj.getProfit() >= value)
 					restrictSize++;
 				else
 					break;
 			}
 
+			Console.log("RESTRIC SIZE " + restrictSize + " SIZE OF LIST " + sortedObjs.size());
 			//Sort random position from residual list
-			j = ThreadLocalRandom.current().nextInt(0, (int) restrictSize + 1);
-
+			int max = instance.getN();
+			int rand = new Random().nextInt(max);
+			j = rand/max * restrictSize;
+			Console.log("RAND INDEX " + j);
+			
 			KnapsackObject randObj = sortedObjs.get(j);
 
 			//If object is not yet in the backpack and fits in it, add object to the backpack

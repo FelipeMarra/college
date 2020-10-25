@@ -4,7 +4,6 @@ import utils.Instance;
 
 public class Main {
 	public static void main(String[] args) {
-		int choice = 0;
 		//App controller
 		Instance instance = Instance.getInstance();
 	
@@ -16,6 +15,7 @@ public class Main {
 		instance.setAlfa();
 	
 		//Main menu
+		int choice = 0;
 		do {
 		Console.log("0 - close");
 		Console.log("1 - new instance");

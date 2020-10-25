@@ -116,17 +116,7 @@ public class Instance {
 	}
 	
 	//Other Methods
-	
-	public void setIterMax() {
-		Console.log("The maximum of iterations: ");
-		iter_max = Console.readInt();
-	}
-	
-	public void setAlfa() {
-		Console.log("The maximum of iterations: ");
-		alfa = Console.readInt();
-	}
-	
+
 	public void resetFo_star() {
 		instance.s_star.setFo(-Double.MAX_VALUE);
 	}
@@ -149,8 +139,37 @@ public class Instance {
 		});
 		return sortedObjects;
 	}
+	
+	public double calculateFo(Solution solution) {
+		double foValue;
+		double utility = 0, weight = 0, penality = 0;
+		
+		for(int i = 0; i < n; i++) {
+			if(solution.getIndex(i).equals(1)) {
+				utility += p.get(i);
+				weight += w.get(i);
+			}
+			penality += w.get(i);
+		}
 
-	//Getters & setters,
+
+		foValue = utility - penality * Double.max(0, weight - b);
+
+		return foValue;
+	}
+
+	//Getters & setters
+
+	public void setIterMax() {
+		Console.log("The maximum of iterations: ");
+		iter_max = Console.readInt();
+	}
+	
+	public void setAlfa() {
+		Console.log("Value of alfa: ");
+		alfa = Console.readDouble();
+	}
+
 	public Solution getS() {
 		return s;
 	}

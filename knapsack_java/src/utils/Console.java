@@ -19,4 +19,10 @@ public class Console {
 		int i = Integer.parseInt(s);
 		return i;
 	}
+	
+	public static double readDouble() {
+		String s = readString();
+		double i = Double.parseDouble(s);
+		return i;
+	}
 }
