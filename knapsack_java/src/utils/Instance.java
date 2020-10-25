@@ -140,7 +140,7 @@ public class Instance {
 		return sortedObjects;
 	}
 	
-	public double calculateFo(Solution solution) {
+	public Double calculateFo(Solution solution) {
 		double foValue;
 		double utility = 0, weight = 0, penality = 0;
 		
@@ -154,7 +154,9 @@ public class Instance {
 
 
 		foValue = utility - penality * Double.max(0, weight - b);
-
+		
+		solution.setFo(foValue);
+		
 		return foValue;
 	}
 
@@ -176,6 +178,10 @@ public class Instance {
 
 	public void setS(Solution s) {
 		this.s = s;
+		
+		if(s.getFo() > s_star.getFo()) {
+			s_star.setSolution(s);
+		}
 	}
 
 	public int getN() {

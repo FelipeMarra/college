@@ -2,6 +2,8 @@ package grasp;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import VND.VND;
 import utils.Console;
 import utils.Instance;
 import utils.KnapsackObject;
@@ -12,15 +14,19 @@ public class Grasp {
 	Instance instance = Instance.getInstance();
 
 	// Methods
-	public void run() {
+	public Solution run(Solution s) {
 		if (instance.instanceIsNull()) {
-			return;
+			return null;
 		}
 		Console.log("Running Grasp: ");
 
+		//Best solution
+		Solution bestS = new Solution();
+		bestS.setFo(-Double.MAX_VALUE);
+
 		// Auxiliary solution
 		Solution sl = new Solution();
-		double fo_star = -Double.MAX_VALUE;
+		
 
 		// Till stopping criteria (max of iterations)
 		for (int i = 0; i < instance.iter_max; i++) {
@@ -30,19 +36,21 @@ public class Grasp {
 			Console.log("solucao construida: " + instance.calculateFo(sl));
 
 			//Apply local search to the built solution
-			//VND(n, sl, p, w, b);
+			Solution vndS = new VND().run(sl);
+			sl.setSolution(vndS);
 			Console.log("solucao refinada: " + instance.calculateFo(sl));
 
 			//Update best solution
-			if (instance.calculateFo(sl) > fo_star) {
+			if (instance.calculateFo(sl) > bestS.getFo()) {
 
 				//Change s to the best solution
-				instance.setS(sl);
+				bestS.setSolution(sl);
 
 				//update fo
-				fo_star = instance.calculateFo(sl);
+				bestS.setFo(instance.calculateFo(sl));
 			}
 		}
+		return bestS;
 	}
 
 	private Solution buildGraspSolution() {

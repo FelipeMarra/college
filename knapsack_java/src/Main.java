@@ -1,6 +1,7 @@
 import grasp.Grasp;
 import utils.Console;
 import utils.Instance;
+import utils.Solution;
 
 public class Main {
 	public static void main(String[] args) {
@@ -30,8 +31,8 @@ public class Main {
 			instance.read();
 			break;
 		case 2:
-			Grasp grasp = new Grasp();
-			grasp.run();
+			Solution graspS = new Grasp().run(instance.getS());
+			instance.setS(graspS);
 			break;
 		}
 		}while(choice != 0);
