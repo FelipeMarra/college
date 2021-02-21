@@ -7,18 +7,20 @@ MAX_ITER = 10
 X_ZERO = 1.5
 
 
-def y(x): return (x ** 2) - x - 2
+def f(x): return (x ** 2) - x - 2
 
 
-def fi(x): return 0.5 * math.sqrt(x + 2)
+def fi(x): return 1/2 * math.sqrt(x + 2)
 
 
 def stop_criteria(x, k):
     print("iteration: " + str(k))
-    return abs(y(x)) <= EPSOLON or k >= MAX_ITER
+    return abs(f(x)) <= EPSOLON or k >= MAX_ITER
+
 
 def custom_print(x):
-    return print("current (x,y) = (" + str(x) + "," + str(y(x)) + ")")
+    return print("current (x,y) = (" + str(x) + "," + str(f(x)) + ")")
+
 
 def fixedPoint():
     k = 1
@@ -33,6 +35,6 @@ def fixedPoint():
 
 fixedPoint()
 
-#ex slide 21
-#como manter x no intervalo I ?
+# ex slide 21
+# como manter x no intervalo I ?
 # método não converge... X_ZERO errado ?
