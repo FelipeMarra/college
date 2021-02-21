@@ -1,28 +1,34 @@
+# problem: find root of f (x) = x² − x − 2 = 0 using the fixed point strategy
+#   I = [1.5, 2.5]
 import math
 
 EPSOLON = 0.1
-MAX_ITER = 50
+MAX_ITER = 10000
+X_ZERO = 1.5
 
-def equasion(x):
-    return math.pow(x, 2)-x-2
 
-def criteria(x, k):
-    print("iterations: " + str(k))
-    return abs(equasion(x)) > EPSOLON and k < MAX_ITER
+def y(x): return math.pow(x, 2)-x-2
 
-def fi(x):
-    return 1/2*math.sqrt(x + 2)
 
-x0 = 0
+def fi(x): return 1/2*math.sqrt(x + 2)
 
-def method():
+
+def stop_criteria(x, k):
+    print("iteration: " + str(k))
+    return abs(y(x)) <= EPSOLON or k >= MAX_ITER
+
+
+def fixedPoint():
     k = 1
-    x = x0
-    print("X0 = " + str(x0))
-    while criteria(x, k):
+    x = X_ZERO
+    print("X_ZERO = " + str(x))
+    while not stop_criteria(x, k):
         x = fi(x)
         k = k+1
-        print("current x = " + str(x))
-        print("current y = " + str(equasion(x)))
+        print("current (x,y) = (" + str(x) + "," + str(y(x)) + ")")
 
-method()
+
+fixedPoint()
+
+# como me manter dentro do intervalo I ?
+# método não converge... X_ZERO errado ?
