@@ -10,13 +10,17 @@ def stop_criteria(x, k):
     return abs(f(x)) <= EPSOLON or k >= MAX_ITER
 
 
-def f(x): return x - x ** 1/3 - 2
+def f(x): return x - x ** (1/3) - 2
 
 
-def f_line(x): return 1 - x/3 ** - 2/3
+def f_line(x): return 1 - (x ** (-2/3))/3
 
 
 def nextX(x): return x - f(x) / f_line(x)
+
+
+def custom_print(x):
+    return print("current (x,y) = (" + str(x) + "," + str(f(x)) + ")")
 
 
 def newtons_method():
@@ -26,10 +30,8 @@ def newtons_method():
     while not stop_criteria(x, k):
         x = nextX(x)
         k = k+1
-        print("current (x,y) = (" + str(x) + "," + str(f(x)) + ")")
+        custom_print(x)
+    custom_print(x)
 
 
 newtons_method()
-
-#ex slide 38
-#f(x) == 0 na primeira iteração... número muito pequeno?

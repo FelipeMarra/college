@@ -1,4 +1,4 @@
-# problem: find root of f (x) = x² − x − 2 = 0 using the fixed point method
+# problem: find root of f(x) = x² − x − 2 = 0 using the fixed point method
 # x in range I = [1.5, 2.5]
 import math
 
@@ -7,16 +7,18 @@ MAX_ITER = 10
 X_ZERO = 1.5
 
 
-def y(x): return x ** 2 - x - 2
+def y(x): return (x ** 2) - x - 2
 
 
-def fi(x): return 1 / 2 * math.sqrt(x + 2)
+def fi(x): return 0.5 * math.sqrt(x + 2)
 
 
 def stop_criteria(x, k):
     print("iteration: " + str(k))
     return abs(y(x)) <= EPSOLON or k >= MAX_ITER
 
+def custom_print(x):
+    return print("current (x,y) = (" + str(x) + "," + str(y(x)) + ")")
 
 def fixedPoint():
     k = 1
@@ -25,7 +27,8 @@ def fixedPoint():
     while not stop_criteria(x, k):
         x = fi(x)
         k = k + 1
-        print("current (x,y) = (" + str(x) + "," + str(y(x)) + ")")
+        custom_print(x)
+    custom_print(x)
 
 
 fixedPoint()

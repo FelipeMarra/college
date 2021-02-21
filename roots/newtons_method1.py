@@ -1,8 +1,8 @@
-# problem: find root of f (x) = x − x^1/3 − 2 = 0 using the newtons method
+# problem: find root of f (x) = x² − x − 2 = 0 using the newton's method
 
 EPSOLON = 0
 MAX_ITER = 10
-X_ZERO = 1.5
+X_ZERO = 1.5  # X_ZERO = 1.5 => y = 2; X_ZERO = 0 => y = -1;
 
 
 def stop_criteria(x, k):
@@ -13,10 +13,14 @@ def stop_criteria(x, k):
 def f(x): return x ** 2 - x - 2
 
 
-def f_line(x): return 2 * x -1
+def f_line(x): return 2 * x - 1
 
 
 def nextX(x): return x - f(x) / f_line(x)
+
+
+def custom_print(x):
+    return print("current (x,y) = (" + str(x) + "," + str(f(x)) + ")")
 
 
 def newtons_method():
@@ -26,10 +30,8 @@ def newtons_method():
     while not stop_criteria(x, k):
         x = nextX(x)
         k = k+1
-        print("current (x,y) = (" + str(x) + "," + str(f(x)) + ")")
+        custom_print(x)
+    custom_print(x)
 
 
 newtons_method()
-
-#ex slide 38
-#f(x) == 0 na primeira iteração... número muito pequeno?
