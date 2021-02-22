@@ -21,7 +21,7 @@ def f(x): return (x**0.5) - (5*(math.e**-x))
 def f_line_aprox(x, lastX): return (f(x) - f(lastX)) / (x - lastX)
 
 
-def nextX(x, lastX): return x - f(x) / f_linemaprox(x, lastX)
+def nextX(x, lastX): return x - f(x) / f_line_aprox(x, lastX)
 
 def custom_print(x):
     return print("current (x,y) = (" + str(x) + "," + str(f(x)) + ")")
