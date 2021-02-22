@@ -1,5 +1,9 @@
+###########################################################################
 # problem: find root of f(x) √x − 5e^−x = 0 using the secant method
+###########################################################################
+
 import math
+
 EPSOLON = 0
 MAX_ITER = 10
 X_ZERO = 1.4
@@ -14,7 +18,7 @@ def stop_criteria(x, k):
 def f(x): return (x**0.5) - (5*(math.e**-x))
 
 
-def f_linemaprox(x, lastX): return (f(x) - f(lastX)) / (x - lastX)
+def f_line_aprox(x, lastX): return (f(x) - f(lastX)) / (x - lastX)
 
 
 def nextX(x, lastX): return x - f(x) / f_linemaprox(x, lastX)
