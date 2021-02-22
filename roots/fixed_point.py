@@ -10,7 +10,7 @@ X_ZERO = 1.5
 def f(x): return (x ** 2) - x - 2
 
 
-def fi(x): return 1/2 * math.sqrt(x + 2)
+def phi(x): return 1/2 * math.sqrt(x + 2)
 
 
 def stop_criteria(x, k):
@@ -27,7 +27,7 @@ def fixedPoint():
     x = X_ZERO
     print("X_ZERO = " + str(x))
     while not stop_criteria(x, k):
-        x = fi(x)
+        x = phi(x)
         k = k + 1
         custom_print(x)
     custom_print(x)
