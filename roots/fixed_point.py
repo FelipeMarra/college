@@ -7,7 +7,7 @@ MAX_ITER = 10
 X_ZERO = 1.5
 
 
-def f(x): return (x ** 2) - x - 2
+def f(x): return x ** 2 - x - 2
 
 
 def phi(x): return 1/2 * math.sqrt(x + 2)
