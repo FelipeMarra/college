@@ -1,19 +1,30 @@
+##############################################################################
+# problema: Existe um conjunto C de R pessoas escolhidas de P tal que qualquer
+# par de pessoas de C se conhecem?
+##############################################################################
+
 import math
 import random
 
 HASHTAG = "########## "
 
-# problema: Existe um conjunto C de R pessoas escolhidas de P tal que qualquer
-# par de pessoas de C se conhecem?
-
 
 def generate_matrix(n):
     matrix = []
+    #generate matrix of 0s
     for row in range(n):
         row = []
         for collum in range(n):
-            row.append(random.randint(0, 1))
+            row.append(0)
         matrix.append(row)
+    for i in range(n):
+        j = i+1
+        while j < n:
+            if(random.randint(0,1) == 1):
+                matrix[i][j] = 1
+                matrix[j][i] = 1
+            j = j + 1
+        
     return matrix
 
 
@@ -31,7 +42,7 @@ def simple_combination(candidates, n, r, x, next, k):
     if k == r:
         solution = []
         for i2 in range(r):
-            solution.append(x[i2] + 1)
+            solution.append(x[i2])
         candidates.append(solution)
     else:
         for i1 in range(next, n):
@@ -39,9 +50,35 @@ def simple_combination(candidates, n, r, x, next, k):
             simple_combination(candidates, n, r, x, i1+1, k+1)
 
 
-def get_valid_solutions(candidates, matrix):
-    print()
+def knows(i, j, matrix): return matrix[i][j] == 1
 
+def candidate_is_valid(candidate, matrix):
+    #print("CANDINDATE IS VALID")
+    length = len(candidate)
+    for i in range(length-1):
+        #print("I FOR DO CANDINDATE IS VALID = " + str(i))
+        j = i+1
+        #print("J FOR DO CANDINDATE IS VALID = " + str(j))
+        while j < length:
+            person1 = candidate[i]
+            person2 = candidate[j]
+            #print(str(person1) + " knows " + str(person2) + " = " + str(knows(person1,person2,matrix)))
+            if(not knows(person1,person2,matrix)):
+                return False
+            j = j + 1
+    return True
+
+def get_valid_solutions(candidates, matrix):
+    valid_solutions = []
+    for candidate in candidates:
+        if(candidate_is_valid(candidate,matrix)):
+            valid_solutions.append(candidate)
+    return valid_solutions
+
+def print_matrix(matrix):
+    for array in range(len(matrix)):
+        print(matrix[array])
+        print()
 
 def menu():
     n = -1
@@ -68,15 +105,15 @@ def menu():
         k = 0
         candidates = []
         simple_combination(candidates, n, r, x, next, k)
-        print(candidates)
+        print_matrix(candidates)
 
         print(HASHTAG + "THE MATRIX")
         matrix = generate_matrix(n)
-        print(matrix)
+        print_matrix(matrix)
 
         print(HASHTAG + "VALID SOLUTIONS")
         valid_solutions = get_valid_solutions(candidates, matrix)
-        print(valid_solutions)
+        print_matrix(valid_solutions)
 
         print()
 
