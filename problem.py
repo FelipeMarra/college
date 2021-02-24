@@ -2,7 +2,7 @@ from newtons_method import NewtonsMethod
 
 # algorithm constants
 EPSILON = 10 ** -6
-MAX_ITER = 10
+MAX_ITER = 500
 
 # equasion constants
 RZAO = 0.082

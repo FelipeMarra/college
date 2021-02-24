@@ -5,7 +5,7 @@ class NewtonsMethod:
         self.X_ZERO = X_ZERO
 
     def stop_criteria(self, f, x, k):
-        print("iteration: " + str(k))
+        #print("iteration: " + str(k))
         return abs(f(x)) <= self.EPSILON or k >= self.MAX_ITER 
 
     def nextX(self, f, f_prime, x): return x - f(x) / f_prime(x)
@@ -20,6 +20,6 @@ class NewtonsMethod:
         while not self.stop_criteria(f, x, k):
             x = self.nextX(f, f_prime, x)
             k = k+1
-            self.custom_print(f, x)
+        #     self.custom_print(f, x)
         self.custom_print(f,x)
         return x

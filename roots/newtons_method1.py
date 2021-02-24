@@ -4,7 +4,7 @@
 
 EPSOLON = 0
 MAX_ITER = 10
-X_ZERO = 1.5  # X_ZERO = 1.5 => y = 2; X_ZERO = 0 => y = -1;
+X_ZERO = 1.5  # X_ZERO = 1.5 => RAIZ = 2; X_ZERO = 0 => RAIZ = -1;
 
 
 def stop_criteria(x, k):
