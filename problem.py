@@ -1,3 +1,7 @@
+###############################################################################
+#Livro Cálculo Numerico - Neide: http://files.blog-da-engenharia-1-semestre.webnode.com/200000006-29d802ad1e/Livro_Neide.pdf
+#pg 109, questão 3.14
+###############################################################################
 from newtons_method import NewtonsMethod
 
 # algorithm constants
