@@ -9,6 +9,7 @@ EPSILON = 10 ** -6
 MAX_ITER = 500
 
 # equasion constants
+K_TO_C = 273.15
 RZAO = 0.082
 A_ZERO = 2.2769
 B_ZERO = 0.05587
@@ -44,7 +45,7 @@ def get_volume_prime(p, t, v, beta, gamma, delta):
 def main():
     temperatures = [0,200]
     #convert to kelvin
-    temperatures = [t+273 for t in temperatures]
+    temperatures = [t+K_TO_C for t in temperatures]
     atm = [1, 2, 5, 20, 40, 60, 80, 120, 140, 160, 180, 200]
 
     for t in temperatures:
