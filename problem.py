@@ -34,11 +34,11 @@ def delta(t):
     return (RZAO * B_ZERO * BZINHO * CZINHO) / t ** 2
 
 
-def get_volume(p, t, v, beta, gamma, delta):
+def get_equasion(p, t, v, beta, gamma, delta):
     return (RZAO * t * v ** -1) + (beta * v ** -2) + (gamma * v ** -3) + (delta * v ** -4) - p
 
 
-def get_volume_prime(p, t, v, beta, gamma, delta):
+def get_equasion_prime(p, t, v, beta, gamma, delta):
     return ((RZAO * t) * (-v ** -2)) + (beta * (-2 * v ** -3)) + (gamma * (-3 * v ** -4)) + (delta * (-4 * v ** -5))
 
 def get_compressiblility(p,v,t):
@@ -59,9 +59,9 @@ def main():
             print("PARA PRESSAO = " + str(p))
             newton = NewtonsMethod(EPSILON, MAX_ITER, initial_v(t, p))
 
-            f = lambda v: get_volume(p, t, v, beta_value, gamma_value, delta_value)
+            f = lambda v: get_equasion(p, t, v, beta_value, gamma_value, delta_value)
 
-            f_prime = lambda v: get_volume_prime(p, t, v, beta_value, gamma_value, delta_value)
+            f_prime = lambda v: get_equasion_prime(p, t, v, beta_value, gamma_value, delta_value)
 
             volume = newton.calculate(f, f_prime)
 
