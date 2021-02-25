@@ -1,6 +1,6 @@
 ###############################################################################
-#Livro Cálculo Numerico - Neide: http://files.blog-da-engenharia-1-semestre.webnode.com/200000006-29d802ad1e/Livro_Neide.pdf
-#pg 109, questão 3.14
+# Livro Cálculo Numerico - Neide: http://files.blog-da-engenharia-1-semestre.webnode.com/200000006-29d802ad1e/Livro_Neide.pdf
+# pg 109, questão 3.14
 ###############################################################################
 from newtons_method import NewtonsMethod
 
@@ -43,10 +43,12 @@ def get_volume_prime(p, t, v, beta, gamma, delta):
 
 
 def main():
-    temperatures = [0,200]
-    #convert to kelvin
+    #temperatures = [0,200]
+    temperatures = [0]
+    # convert to kelvin
     temperatures = [t+K_TO_C for t in temperatures]
-    atm = [1, 2, 5, 20, 40, 60, 80, 120, 140, 160, 180, 200]
+    #atm = [1, 2, 5, 20, 40, 60, 80, 120, 140, 160, 180, 200]
+    atm = [1]
 
     for t in temperatures:
         print("PARA T = " + str(t))
@@ -56,9 +58,15 @@ def main():
         for p in atm:
             print("PARA PRESSAO = " + str(p))
             newton = NewtonsMethod(EPSILON, MAX_ITER, initial_v(t, p))
-            f = lambda v: get_volume(p, t, v, beta_value, gamma_value, delta_value)
-            f_prime = lambda v: get_volume(p, t, v, beta_value, gamma_value, delta_value)
-            volume = newton.calculate(f,f_prime)
+
+            def f(v): return get_volume(
+                p, t, v, beta_value, gamma_value, delta_value)
+
+            def f_prime(v): return get_volume(
+                p, t, v, beta_value, gamma_value, delta_value)
+
+            volume = newton.calculate(f, f_prime)
             print("O VOLUME ENCONTRADO FOI " + str(volume))
+
 
 main()
