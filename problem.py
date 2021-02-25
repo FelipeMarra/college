@@ -6,7 +6,7 @@ from newtons_method import NewtonsMethod
 
 # algorithm constants
 EPSILON = 10 ** -6
-MAX_ITER = 500
+MAX_ITER = 10000
 
 # equasion constants
 K_TO_C = 273.15
@@ -41,32 +41,35 @@ def get_volume(p, t, v, beta, gamma, delta):
 def get_volume_prime(p, t, v, beta, gamma, delta):
     return ((RZAO * t) * (-v ** -2)) + (beta * (-2 * v ** -3)) + (gamma * (-3 * v ** -4)) + (delta * (-4 * v ** -5))
 
+def get_compressiblility(p,v,t):
+    return (p*v) / (RZAO*t)
 
 def main():
-    #temperatures = [0,200]
-    temperatures = [0]
+    temperatures = [0,200]
     # convert to kelvin
-    temperatures = [t+K_TO_C for t in temperatures]
-    #atm = [1, 2, 5, 20, 40, 60, 80, 120, 140, 160, 180, 200]
-    atm = [1]
+    temperatures = [t + K_TO_C for t in temperatures]
+    pressions = [1, 2, 5, 20, 40, 60, 80, 120, 140, 160, 180, 200]
 
     for t in temperatures:
         print("PARA T = " + str(t))
         beta_value = beta(t)
         gamma_value = gamma(t)
         delta_value = delta(t)
-        for p in atm:
+        for p in pressions:
             print("PARA PRESSAO = " + str(p))
             newton = NewtonsMethod(EPSILON, MAX_ITER, initial_v(t, p))
 
-            def f(v): return get_volume(
-                p, t, v, beta_value, gamma_value, delta_value)
+            f = lambda v: get_volume(p, t, v, beta_value, gamma_value, delta_value)
 
-            def f_prime(v): return get_volume(
-                p, t, v, beta_value, gamma_value, delta_value)
+            f_prime = lambda v: get_volume_prime(p, t, v, beta_value, gamma_value, delta_value)
 
             volume = newton.calculate(f, f_prime)
-            print("O VOLUME ENCONTRADO FOI " + str(volume))
 
+            print("O VOLUME: ", str(volume))
+
+            compressiblility = get_compressiblility(p,volume,t)
+
+            print("O FATOR DE COMPRESSIBILIDADE " + str(compressiblility))
+            print()
 
 main()
