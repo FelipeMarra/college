@@ -60,7 +60,7 @@ def min_caixas():
 
     caixasP.append(caixaP)
     caixasV.append(caixaV)
-    
+
 
     print("Numero de caixa com valor limitado: ", numero_de_caixas_V)
     print("Numero de caixa com peso limitado: ", numero_de_caixas_P)
