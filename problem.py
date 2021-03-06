@@ -2,6 +2,7 @@
 # Livro Cálculo Numerico - Neide: http://files.blog-da-engenharia-1-semestre.webnode.com/200000006-29d802ad1e/Livro_Neide.pdf
 # pg 109, questão 3.14
 ###############################################################################
+import matplotlib.pyplot as plt
 from newtons_method import NewtonsMethod
 
 # algorithm constants
@@ -50,11 +51,17 @@ def main():
     temperatures = [t + K_TO_C for t in temperatures]
     pressions = [1, 2, 5, 20, 40, 60, 80, 120, 140, 160, 180, 200]
 
+    #points of compressiblility and pression for each temperature to generate the graphic
+    points = {}
+
     for t in temperatures:
         print("PARA T = " + str(t))
         beta_value = beta(t)
         gamma_value = gamma(t)
         delta_value = delta(t)
+        points[t] = {}
+        points[t]["p"] = []
+        points[t]["z"] = []
         for p in pressions:
             print("PARA PRESSAO = " + str(p))
             newton = NewtonsMethod(EPSILON, MAX_ITER, initial_v(t, p))
@@ -69,7 +76,15 @@ def main():
 
             compressiblility = get_compressiblility(p,volume,t)
 
+            points[t]["p"].append(p)
+            points[t]["z"].append(compressiblility)
+
             print("O FATOR DE COMPRESSIBILIDADE " + str(compressiblility))
             print()
-
+    for t in temperatures:
+        plt.plot(points[t]["p"],points[t]["z"])
+    plt.ylabel("z (compressiblility)", loc="top")
+    plt.xlabel("P (pression)", loc="right")
+    plt.grid()
+    plt.show()
 main()
