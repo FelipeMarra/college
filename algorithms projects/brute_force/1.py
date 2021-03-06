@@ -38,7 +38,7 @@ def generate_matrix(n):
 
 
 def simple_combination(candidates, n, r, x, next, k):
-    # qunado chegarmos ao tamanho da combinação
+    # quando chegarmos ao tamanho da combinação
     if k == r:
         solution = []
         for i2 in range(r):

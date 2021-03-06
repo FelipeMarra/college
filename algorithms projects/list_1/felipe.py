@@ -7,7 +7,6 @@ class item:
     def show(self):
         print("id: ", self.item_id, "valor: ", self.valor, "peso: ", self.peso)
 
-
 class box:
     def __init__(self, itens: list, type: item):
         self.itens = itens.copy()
@@ -48,7 +47,7 @@ def algoritmo():
     ordPeso = sorted(itens, key=lambda x: x.peso)
     ordValor = sorted(itens, key=lambda x: x.valor)
 
-    # Enquanto ouverem itens a serem embalados
+    # Enquanto houverem itens a serem embalados
     while itens:
         valorCount = 0
         pesoCount = 0
