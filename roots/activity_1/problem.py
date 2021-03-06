@@ -42,16 +42,18 @@ def get_equasion(p, t, v, beta, gamma, delta):
 def get_equasion_prime(p, t, v, beta, gamma, delta):
     return ((RZAO * t) * (-v ** -2)) + (beta * (-2 * v ** -3)) + (gamma * (-3 * v ** -4)) + (delta * (-4 * v ** -5))
 
-def get_compressiblility(p,v,t):
+
+def get_compressiblility(p, v, t):
     return (p*v) / (RZAO*t)
 
+
 def main():
-    temperatures = [0,200]
+    temperatures = [0, 200]
     # convert to kelvin
     temperatures = [t + K_TO_C for t in temperatures]
     pressions = [1, 2, 5, 20, 40, 60, 80, 120, 140, 160, 180, 200]
 
-    #points of compressiblility and pression for each temperature to generate the graphic
+    # points of compressiblility and pression for each temperature to generate the graphic
     points = {}
 
     for t in temperatures:
@@ -66,25 +68,31 @@ def main():
             print("PARA PRESSAO = " + str(p))
             newton = NewtonsMethod(EPSILON, MAX_ITER, initial_v(t, p))
 
-            f = lambda v: get_equasion(p, t, v, beta_value, gamma_value, delta_value)
+            def f(v): return get_equasion(
+                p, t, v, beta_value, gamma_value, delta_value)
 
-            f_prime = lambda v: get_equasion_prime(p, t, v, beta_value, gamma_value, delta_value)
+            def f_prime(v): return get_equasion_prime(
+                p, t, v, beta_value, gamma_value, delta_value)
 
             volume = newton.calculate(f, f_prime)
 
             print("O VOLUME: ", str(volume))
 
-            compressiblility = get_compressiblility(p,volume,t)
+            compressiblility = get_compressiblility(p, volume, t)
 
             points[t]["p"].append(p)
             points[t]["z"].append(compressiblility)
 
             print("O FATOR DE COMPRESSIBILIDADE " + str(compressiblility))
             print()
+
+    # graphic plot
     for t in temperatures:
-        plt.plot(points[t]["p"],points[t]["z"])
+        plt.plot(points[t]["p"], points[t]["z"])
     plt.ylabel("z (compressiblility)", loc="top")
     plt.xlabel("P (pression)", loc="right")
     plt.grid()
     plt.show()
+
+
 main()
