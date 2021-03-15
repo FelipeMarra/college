@@ -78,7 +78,8 @@ class GaussSidel:
         print("SOLUTION: ", x)
         return x
 
-#exemple:
+#exemples:
+
 # M = [
 #     [4, 0.24, -0.08, 8],
 #     [0.09, 3, -0.15, 9],
@@ -86,16 +87,17 @@ class GaussSidel:
 # ]
 # gauzao = GaussSidel(M, 3, 30, 10**-3)
 # gauzao.calculate([0, 0, 0])
-
 #output:
 # Precision or Max iter achieved: precision= 0.0 iter= 0
 # SOLUTION:  [2.0, 2.94, 5.0388]
 
-M = [
-    [5, 1, 1, 5],
-    [3, 4, 1, 6],
-    [3, 3, 6, 0],
-]
-
-gauzao = GaussSidel(M, 3, 4, -1)
-gauzao.calculate([0, 0, 0])
+# M = [
+#     [5, 1, 1, 5],
+#     [3, 4, 1, 6],
+#     [3, 3, 6, 0],
+# ]
+# gauzao = GaussSidel(M, 3, 4, -1)
+# gauzao.calculate([0, 0, 0])
+#output:
+# Precision or Max iter achieved: precision= 0.0 iter= 4
+# SOLUTION:  [0.9633749999999999, 0.5838750000000001, -0.773625]
