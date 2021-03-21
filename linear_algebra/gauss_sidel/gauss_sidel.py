@@ -1,6 +1,6 @@
 class GaussSidel:
     # @param matrix: a list of lists with depth 1, ex: [[],[],[]]
-    # @param n: the order of the coeficientes matrix
+    # @param n: the order of the coeficientes matrix (number of columns -1)
     def __init__(self, matrix, n, max_iter, epsolon):
         self.MATRIX = matrix
         self.N = n
@@ -12,7 +12,7 @@ class GaussSidel:
     def test_convergence(self):
         last_beta = 1
         beta = []
-        for i in range(self.N):
+        for i in range(self.N+1):
             sum1 = 0
             sum2 = 0
             # first sum
@@ -21,7 +21,7 @@ class GaussSidel:
                 sum1 = sum1 + \
                     (abs(self.MATRIX[i][j]) / abs(self.MATRIX[i][i])) * b_j
             # second sum
-            for j in range(i+1, self.N):
+            for j in range(i+1, self.N+1):
                 sum2 = sum2 + (abs(self.MATRIX[i][j]) / abs(self.MATRIX[i][i]))
             # beta_i
             current_beta = sum1 + sum2
@@ -32,12 +32,12 @@ class GaussSidel:
                 print("In line ", i, "the Sassenfeld criteria was not accomplished")
                 print("Sum 1 was ", sum1, "And sum 2 was ", sum2)
                 print("The hole line was:")
-                for column in range(self.N):
+                for column in range(self.N+1):
                     print("[", i, ",", column, "] = ", self.MATRIX[i][column])
                 # end test sice the matrix failed
                 return False
         print("The matrix converges")
-        #print("BETAS:", beta)
+        print("BETAS:", beta)
         print()
         return True
 
@@ -100,14 +100,3 @@ class GaussSidel:
 #output:
 # Precision or Max iter achieved: precision= 0.0 iter= 0
 # SOLUTION:  [1.909240285088, 3.19495481216736, 5.044806693392467]
-
-# M = [
-#     [5, 1, 1, 5],
-#     [3, 4, 1, 6],
-#     [3, 3, 6, 0],
-# ]
-# gauzao = GaussSidel(M, 3, 4, -1)
-# gauzao.calculate([0, 0, 0])
-#output:
-# Precision or Max iter achieved: precision= 0.0 iter= 4
-# SOLUTION:  [1.001625, 0.998625, -1.000125]
