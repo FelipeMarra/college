@@ -12,7 +12,7 @@ class GaussSidel:
     def test_convergence(self):
         last_beta = 1
         beta = []
-        for i in range(self.N+1):
+        for i in range(self.N):
             sum1 = 0
             sum2 = 0
             # first sum
@@ -21,7 +21,7 @@ class GaussSidel:
                 sum1 = sum1 + \
                     (abs(self.MATRIX[i][j]) / abs(self.MATRIX[i][i])) * b_j
             # second sum
-            for j in range(i+1, self.N+1):
+            for j in range(i+1, self.N):
                 sum2 = sum2 + (abs(self.MATRIX[i][j]) / abs(self.MATRIX[i][i]))
             # beta_i
             current_beta = sum1 + sum2
@@ -32,7 +32,7 @@ class GaussSidel:
                 print("In line ", i, "the Sassenfeld criteria was not accomplished")
                 print("Sum 1 was ", sum1, "And sum 2 was ", sum2)
                 print("The hole line was:")
-                for column in range(self.N+1):
+                for column in range(self.N):
                     print("[", i, ",", column, "] = ", self.MATRIX[i][column])
                 # end test sice the matrix failed
                 return False
