@@ -94,27 +94,23 @@ void liberaGrafo(Grafo* g){
 }
 
 ListaAdj* adjacentes(Grafo* g, int v){
-    //cabeça lista de adjacentes de v
-    ListaAdj* adjacentes_cpy = (ListaAdj*) malloc(sizeof(ListaAdj));
-    adjacentes_cpy->id = v;
-    adjacentes_cpy->prox = NULL;
+    //primeiro item da lista de adjacentes de v
+    ListaAdj* cabeca = NULL;
     //pega lista de adjacentes de v
     ListaAdj* adjacentes_v = g->lista_adj[v];
-    //copia lista adj v imprimindo os adj de v
+    //copia lista adj v
     while (adjacentes_v != NULL){
-        printf("%d eh adjacente de %d \n",adjacentes_v->id,v);
         //copia no atual
         ListaAdj* novo_no = (ListaAdj*) malloc(sizeof(ListaAdj));
-        novo_no->prox->id = adjacentes_v->id;
-        novo_no->prox->peso = adjacentes_v->peso;
+        novo_no->id = adjacentes_v->id;
+        novo_no->peso = adjacentes_v->peso;
         novo_no->prox = NULL;
-        adjacentes_cpy->prox = novo_no;
+        if(cabeca == NULL)
+            cabeca = novo_no;
         //anda pro proximo
         adjacentes_v = adjacentes_v->prox;
-        adjacentes_cpy = novo_no;
     }
-    printf("Fim adjacentes de %d \n",v);
-    return adjacentes_cpy;
+    return cabeca;
 }
 
 int main(){
@@ -150,7 +146,16 @@ int main(){
     printf(("Digite um vétice para saber os adjacentes: "));
     scanf("%d", &vertice);
     fflush(stdin);
-    adjacentes(grafo, vertice);
+
+    ListaAdj* cabeca = adjacentes(grafo, vertice);
+
+    while (cabeca != NULL){
+        printf("%d eh adjacente de %d \n",cabeca->id,v);
+        //anda pro proximo
+        cabeca = cabeca->prox;
+    }
+    printf("Fim adjacentes de %d \n",v);
+
     system("pause"); 
 
     liberaGrafo(grafo); 
