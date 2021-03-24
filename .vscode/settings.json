@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.ui": "xml",
+        "*.c": "c",
+        "queue.h": "c"
+    }
+}
