@@ -51,22 +51,25 @@ void liberaGrafo(Grafo *g){
     free(g); 
 }
 
-int adjacentes(Grafo* g, int v){
-    //inicializa lista
-    int adjacentes[g->qv];
-    int index = 0;
+int* adjacentes(Grafo* g, int v){
+    //inicializa lista que varre a linha
+    int* adj = (int*) malloc(g->qv * sizeof(int));
+    int count = 0;
+    int count_back = 0;
     //varre a linha v procurando por pesos maiores que 0
     for (int i = 0; i < g->qv; i++){
         int peso_no_adj = g->matrizadj[v][i];
         if(peso_no_adj){
-            printf("%d eh adjacente de %d \n",i,v);
-            adjacentes[index] = i;
+            //printf("%d eh adjacente de %d \n",i,v);
+            adj[count] = i;
+            count++;
         }else{
-            adjacentes[index] = -1;
+            //coloca -1 de trás pra frente pra cada posição que não é adjacente
+            adj[g->qv-1-count_back] = -1;
+            count_back++;
         }
-            index++;
     }
-    return *adjacentes;
+    return adj;
 }
 
 int main(){
@@ -102,7 +105,14 @@ int main(){
     printf(("Digite um vétice para saber os adjacentes: "));
     scanf("%d", &vertice);
     fflush(stdin);
-    adjacentes(grafo, vertice);
+    //recebe e pinta adjacentes do vertice
+    int* adj = adjacentes(grafo, vertice);
+    int count = 0;
+    while (adj[count] != -1){
+        printf("%d eh adjacente de %d \n",adj[count],vertice);
+        count++;
+    }
+    
     system("pause"); 
 
     liberaGrafo(grafo);
