@@ -105,8 +105,7 @@ void buscaLargura(Grafo* g, int s){
     }
     
     //Inicia fila com s
-    Queue Q;
-    Q = createQueue();
+    Queue Q = createQueue();
     insertValue(Q,s);
 
     //Enquanto a fila não está vazia
