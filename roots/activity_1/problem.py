@@ -3,7 +3,7 @@
 # pg 109, questão 3.14
 ###############################################################################
 import matplotlib.pyplot as plt
-from newtons_method import NewtonsMethod
+from .newtons_method import NewtonsMethod
 
 # algorithm constants
 EPSILON = 10 ** -6
