@@ -9,13 +9,13 @@ Assim sendo termos 11 intervalos de tamalho 2, ou seja, será 2*y_pto_médio onz
 '''
 x0 = 0
 x1 = 2
+h = (x1 - x0)/2
 y_vet = [0,2,3,5,4,3,5,4,3,5,0]
 
 def calculate():
     sum_t = 0
     for i in range(len(y_vet)):
         sum_t = sum_t + 2*y_vet[i]
-    h = (x1 - x0)/2
     return h * sum_t
 
 print("RESULTADO:",calculate())
