@@ -61,3 +61,23 @@ class SparceMatrix:
             print("this origin is not there")
             return
         return len(self.edge_map[origin])
+
+    def successors(self, origin: int):
+        if not origin in self.edge_map:
+            print("this origin is not there")
+            return
+
+        return list(self.edge_map[origin].keys())
+
+    def predecessors(self, origin: int):
+        if not origin in self.edge_map:
+            print("this origin is not there")
+            return
+
+        pred = []
+
+        for key in self.edge_map.keys():
+            if origin in self.edge_map[key]:
+                pred.append(key)
+        
+        return pred

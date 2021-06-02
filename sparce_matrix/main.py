@@ -27,6 +27,14 @@ def vertex_degree():
     origin = int(input("origin: "))
     print("vertex degree:",graph.vertex_degree(origin))
 
+def successors():
+    origin = int(input("origin: "))
+    print("successors:",graph.successor(origin))
+
+def predecessors():
+    origin = int(input("origin: "))
+    print("predecessors:",graph.predecessors(origin))
+
 # menu
 option = 0
 while option != -1:
@@ -36,6 +44,8 @@ while option != -1:
     print("1 remove an vertex")
     print("2 summary & print")
     print("3 vertex degree")
+    print("4 edge successor")
+    print("5 edge predecessors")
     print()
 
     option = int(input("select an option: "))
@@ -48,5 +58,9 @@ while option != -1:
         summary_print()
     elif option == 3:
         vertex_degree()
+    elif option == 4:
+        successors()
+    elif option == 5:
+        predecessors()
     else:
         print("pay attention dummy!!!")
