@@ -21,7 +21,8 @@ def summary_print():
     print("vextexes:", graph.num_vertexes())
     print("edges:", graph.num_edges())
     print("density:", graph.density())
-    print(graph.edge_map)
+    print()
+    graph.print()
 
 
 def vertex_degree():

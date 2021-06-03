@@ -81,3 +81,12 @@ class SparceMatrix:
                 pred.append(key)
         
         return pred
+
+    def print(self):
+        for origin in self.edge_map:
+            print("Edge",origin,"goes to:")
+            for data in self.edge_map[origin].values():
+                destiny, weight = data.values()
+                print("=> Edge",destiny,"with weight",weight)
+            print()
+
