@@ -1,0 +1,5 @@
+Σ = {a,b}
+
+L = {b^n a^y+1 b^x | n ≥ 0, x+y é ímpar}
+
+Em outras palvras: a quantidade de bs no começo não importa, depois vem um a, seguido por x as e y bs de modo que x+y é impar

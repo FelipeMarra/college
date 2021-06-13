@@ -1,0 +1,6 @@
+Σ = {a,b}
+
+L = {b (ab)^n b | n ≥ 0}
+
+Em outras palvras: começa com um b, que é seguido por uma sequência de abs
+de tamanho qualquer, e termina com um b.
