@@ -1,4 +1,5 @@
 from sparce_matrix import SparceMatrix
+from floyd_warshall import FloydWarshall
 
 graph = SparceMatrix()
 
@@ -59,6 +60,21 @@ def add_from_file():
             graph.insert_vertex(int(origin), int(destiny), float(weight))
 
 
+def print_matrix(matrix, l, c):
+    for j in range(c):
+        if j == 0:
+            print(" "*3, f'{j:^13}', end=' ')
+        else:
+            print(f'{j:^13}', end=' ')
+    print("\n")
+
+    for i in range(l):
+        print(i, end='   ')
+        for j in range(c):
+            print(f'[{matrix[j][i]:^11}]', end=' ')
+        print()
+
+
 # menu
 option = 0
 while option != -1:
@@ -71,6 +87,7 @@ while option != -1:
     print("4 vertex degree")
     print("5 edge successors")
     print("6 edge predecessors")
+    print("7 generate DISTANCE matrix")
     print()
 
     option = int(input("select an option: "))
@@ -89,5 +106,8 @@ while option != -1:
         successors()
     elif option == 6:
         predecessors()
+    elif option == 7:
+        n = graph.num_vertexes()
+        print_matrix(FloydWarshall().run(graph), n, n)
     else:
         print("pay attention dummy!!!")
