@@ -1,0 +1,24 @@
+1)
+Etapa 1:
+iteração| Vε
+início  |{X}
+   1    |{X, S}
+
+Etapa 2:
+iteração|Produções
+início  |{S→aSc|X, X→bXc}
+   1    |{S→aSc|X|ac, X→bXc}
+   2    |{S→aSc|X|ac,X→bXc|bc}
+
+Resultado: {S→aSc|X|ac, X→bXc|bc}
+
+2)
+Etapa 1:
+iteração|Produções
+início  |{S→aSc, X→bXc|ε}
+   1S	|{S→aSc|bXc|ε, X→bXc|ε}
+
+Resultado: {S→aSc|bXc|ε, X→bXc|ε}
+
+Ou com base no resultado de 1):
+ {S→aSc|ac|bXc|bc, X→bXc|bc}

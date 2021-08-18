@@ -1,0 +1,30 @@
+Alfabeto (sigma): {0,1}
+Símbolos auxíliáres (V): {D}
+
+Transições:
+I   q0 => q1: Apenas se move pra direita
+II  q1 e lê 0: Apenas se move pra direita e retorna ao mesmo estado
+III q1 e lê 1: Se move pra direita e vai pra q2
+IV  q2 e lê 0: Se move pra direita e vai pra q4
+V   q4: aceitação
+
+Lógica:
+Por II percebemos que no início a palavra pode ter tantos 0s quanto
+quisermos, inclusive nenhum. Por III e por IV se ela lê 1 precisa 
+recever um 0 depois para atingir a aceitação.
+
+Exemplos de palavras aceitas:
+10
+010
+0010
+00010
+000000000000000000000000000000000000010
+
+Exemplos de palavras rejeitadas:
+1
+11
+0110
+011
+00000000000110
+
+Resumindo: A máquina aceira palvras da forma L = {0^n 1 0 | n >= 0}
