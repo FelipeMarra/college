@@ -1,0 +1,12 @@
+Considerando a linguagem Csmall como a linguagem fonte analisada pelo compilador,
+responda a seguinte questão: O analisador léxico consegue reconhecer algum erro no código
+abaixo? Explique destacando os erros léxicos caso existam.
+int () {
+ int a 2
+ int b$;
+ float 2a;
+}
+
+R: O código aprensentado possui dois erros: 
+Linha 3: O símbolo $ não é um lexema reconhecido pela linguagem
+Linha 4: Uma variável não pode ser declara com um número sendo o caractere incial

@@ -1,0 +1,11 @@
+Considerando a linguagem Csmall como a linguagem fonte analisada pelo compilador,
+responda a seguinte questão:
+O analisador léxico consegue reconhecer algum erro no código abaixo? Explique destacando
+os erros léxicos caso existam.
+
+main int ( { }
+ 2 = a ;
+}
+
+R: Do ponto de vista léxico o código não apresenta erros pois todos os símbolos presentes
+são lexemas válidos reconhecidos pela linguagem Csmall
