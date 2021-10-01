@@ -1,0 +1,51 @@
+Com base na gramática abaixo, responda às seguintes questões:
+E → T E’
+E’ → + T E’ | - T E’ | ^ T E’ | * T E’ | ε
+T → id | num | ( E )
+Terminais = {+,-,^,*,id,num,(,)}
+
+Obs: O operador ^ é o operador de potência. A relação de precedência da maior para a
+menor é a seguinte: ^, *, + ou -. O + e - possuem a mesma precedência.
+
+a) Existem conflitos nessa gramática, isto é, conflitos na escolha de uma produção a ser
+aplicada por um analisador descendente? Justifique sua resposta.
+
+## Derivar: id*id+id
+# Método I:
+E => T E' => ID E' => ID * T E' => ID * ID E' => ID * ID + T E' => ID * ID + ID 
+
+# Método II:
+E => T E' => ID + ID * T E' => ID + ID * ID
+
+## Derivar: id+(id*id)
+# Método I:
+E => T E' => ID E' => ID + T E' => ID + (E) E' => ID + (T E') ε => ID + ( ID * T E') => 
+=> ID + ( ID * ID ε ) => ID + ( ID * ID )
+
+# Método II:
+E => T E' => ID E' => (E) + T E' => ( T * E' ) + T E' => (ID * T E') + T E' =>
+=> (ID * ID ε) + ID ε => (ID * ID) + ID
+
+
+Nota-se que apesar de chegarmos em expressões matematicamente equivalentes, não foi possível em
+determinado ponto da derivação escolher regras distintas e chegar em sequências de terminias
+idênticas já que o termo que "expande", ou seja o E' está semrpe a direita. Portanto não existem
+conflitos (ambiguidade).
+
+b) Por que a gramática acima não considera a precedência correta de operadores? Justifique.
+
+E => T E' => ID + ID * T E' => ID + ID * ID
+
+*Figura 1*
+
+c) Modifique a gramática acima para que ela passe a considerar a precedência correta de
+operadores. Caso exista conflitos, elimine os conflitos também. Explique todas as
+
+E → T ADD MULT POW
+ADD → + T ADD MULT POW| - T ADD MULT POW | ε
+MULT → * T MULT POW | ε
+POW → ^ T  POW | ε
+T → id | num | ( E )
+Terminais = {+,-,^,*,id,num,(,)}
+
+
