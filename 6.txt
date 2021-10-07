@@ -1,0 +1,23 @@
+Construa e posicione regras semânticas na gramática abaixo para realizar a verificação de
+compatibilidade de tipos nas expressões da linguagem e nas atribuições. Considere que o
+tipo do identificador já está armazenado na entrada da tabela de símbolos dele. Considere
+que um identificador pode ter os seguintes tipos: char, short, int e float. Caso as expressões
+envolvam o tipo char com int ou float, o compilador deve exibir uma mensagem de erro
+informando a incompatibilidade. O mesmo é verdadeiro para expressões que tenham short
+com int ou float como operandos. Expressões envolvem apenas int e float são válidas. As
+compatibilidades descritas anteriormente também se aplicam às atribuições.
+Dica: Ao pensar nas regras semânticas, lembre-se de definir um ou mais atributos que serão
+utlizados nas regras semânticas. Não esqueça de posicionar todas as regras na gramática.
+Assign -> id = E ; AssignList
+AssignList -> id = E ; AssignList | ε
+E -> T E'
+E'-> + T E' | - T E' | ε
+T -> F T'
+T' -> * F T' | / F T' | ε
+F -> ( E )
+F -> integer_const
+F -> float_const
+F -> id
+Terminais = {+,-,*,/,(,),integer_const,float_const,id,=,;,ε}
+integer_const representa uma constante numérica inteira
+float_const representa uma constante numérica de ponto flutuante

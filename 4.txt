@@ -1,0 +1,31 @@
+Dada a gramática abaixo, mostre o passo a passo da análise da cadeia 
+                id - float_const / integer_const 
+realizada por um autômato de pilha.
+
+E -> T E'
+E' -> + T E' | - T E' | ε
+T -> F T'
+T'-> * F T' | / F T' | ε
+F -> id | integer_const | float_const
+Terminais = {+,-,*,/,id,integer_const,float_const}
+
+|Pilha                  |Restante da entrada                |Ação
+
+E                       |id - float_const / integer_const $ |1 
+E'T                     |id - float_const / integer_const $ |1
+E'T'F                   |id - float_const / integer_const $ |1
+E'T'id                  |id - float_const / integer_const $ |2
+E'T'                    |- float_const / integer_const $    |3
+E'                      |- float_const / integer_const $    |1
+E'T-                    |- float_const / integer_const $    |2
+E'T                     |float_const / integer_const $      |1
+E'T'F                   |float_const / integer_const $      |1
+E'T'float_const         |float_const / integer_const $      |2
+E'T'                    |/ integer_const $                  |1
+E'T'F/                  |/ integer_const $                  |2
+E'T'F                   |integer_const $                    |1
+E'T'integer_const       |integer_const $                    |2
+E'T'                    |$                                  |3
+E'                      |$                                  |3
+Pilha vazia             |$                                  |Aceita a entrada
+                
