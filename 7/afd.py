@@ -151,6 +151,11 @@ for line in fin:  # Lê linha por linha do arquivo de entrada
                 state = 9
                 i += 1
                 continue
+            elif char in '"':
+                
+                state = 10
+                i += 1
+                continue
 
         if state == 1:
             if re.match(r'[a-zA-Z]([a-zA-Z0-9_])*', char):
@@ -254,6 +259,14 @@ for line in fin:  # Lê linha por linha do arquivo de entrada
             else:
                 i -= 1
                 state = 0
+
+        if state == 10:
+            if char == '"':
+                tokens.append((to_str(lexeme), 'LITERAL_STRING', line_number))
+                lexeme.clear()
+                state = 0
+            else:
+                lexeme.append(char)
 
         i += 1
     print("TOKENS:", tokens)
