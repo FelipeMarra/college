@@ -1,3 +1,6 @@
+#TODO: a) e b) estão juntas, pra a) tem q separar o AFD daqui
+#TODO: Verificar erro léxico
+
 # a) Construa um autômato finito determinístico (AFD) para reconhecer todos os lexemas da
 # linguagem P.
 # Os lexemas da linguagem P são os seguintes:
