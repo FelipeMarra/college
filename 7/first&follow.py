@@ -45,7 +45,7 @@
 
 #=> ExprOpc -> OpIgual Rel ExprOpc
 #=> ExprOpc -> ε
-#First(OpIgual) -> {==, !=}
+#First(ExprOpc) -> First(OpIgual) -> {==, !=}
 
 
 #=> OpIgual -> ==
@@ -140,53 +140,53 @@
 
 
 #=> Expr -> Rel ExprOpc
-#First(Expr) -> First(Rel) -> First(Adição) -> First(Termo) -> First(Fator) -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
+#Follow(Expr) -> {; then do )}
 
 #=> ExprOpc -> OpIgual Rel ExprOpc
 #=> ExprOpc -> ε
-#First(OpIgual) -> {==, !=}
+#Follow(ExprOpc) -> {Follow(Expr), Follow(Rel)} -> {; then do ) ==, != id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 
 #=> OpIgual -> ==
 #=> OpIgual -> !=
-#First(OpIgual) -> {==, !=}
+#Follow(OpIgual) -> {First(Rel)} -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 
 #=> Rel -> Adicao RelOpc
-#First(Rel) -> First(Adição) -> First(Termo) -> First(Fator) -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
+#Follow(Rel) -> {First(ExprOpc) Follow(Expr) Follow(ExprOpc)} -> {==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (} #TODO verificar pergunta feita ao prof
 
 
 #=> RelOpc -> OpRel Adicao RelOpc
 #=> RelOpc -> ε
-#First(RelOpc) -> First(OpRel) -> {<, <=, >, >=}
+#Follow(RelOpc) -> {Follow(Rel) First(Adicao)} -> {==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 #=> OpRel -> <
 #=> OpRel -> <=
 #=> OpRel -> >
 #=> OpRel -> >=
-#First(OpRel) -> {<, <=, >, >=}
+#Follow(OpRel) -> {First(Adicao)} -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 #=> Adicao -> Termo AdicaoOpc
-#First(Adicao) -> First(Termo) -> First(Fator) -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
+#Follow(Adicao) -> {First(RelOpc) Follow(Rel) Follow(RelOpc)} -> {<, <=, >, >= ==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 #=> AdicaoOpc -> OpAdicao Termo AdicaoOpc
 #=> AdicaoOpc -> ε
-#First(AdicaoOpc) -> First(OpAdicao) -> {+, -}
+#Follow(AdicaoOpc) -> {Follow(Adicao) First(Termo)} -> {<, <=, >, >= ==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 #=> OpAdicao -> +
 #=> OpAdicao -> -
-#First(OpAdicao) -> {+, -}
+#Follow(OpAdicao) -> {First(Termo)} -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 #=> Termo -> Fator TermoOpc
-#First(Termo) -> First(Fator) -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
+#Follow(Termo) -> {First(AdicaoOpc) Follow(Adicao) Follow(AdicaoOpc)} -> {+, - <, <=, >, >= ==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 #=> TermoOpc -> OpMult Fator TermoOpc
 #=> TermoOpc -> ε
-#First(TermoOpc) -> First(OpMult) -> {*, /}
+#Follow(TermoOpc) -> {Follow(Termo)} -> {+, - <, <=, >, >= ==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 #=> OpMult -> *
 #=> OpMult -> /
-#First(OpMult) -> {*, /}
+#Follow(OpMult) -> {First(Fator)} -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
 
 #=> Fator -> id
 #=> Fator -> integer_const
@@ -195,4 +195,4 @@
 #=> Fator -> FALSE
 #=> Fator -> STRING_LITERAL
 #=> Fator -> ( Expr )
-#First(Fator) -> {id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
+#Follow(Fator) -> {First(TermoOpc) Follow(Termo)} ->  {*, / +, - <, <=, >, >= ==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
