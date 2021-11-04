@@ -201,7 +201,11 @@ def OpMult():
 # Fator -> STRING_LITERAL
 # Fator -> ( Expr )
 def Fator():
-    if(tokens_vec[0][1] in ["ID", "INTEGET_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGET_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL"]):
         match(tokens_vec[0][1])
+    if(tokens_vec[0][1] == "LBRACKET"):
+        match("LBRACKET")
+        Expr()
+        match("RBRACKET")
 
 Programa()
