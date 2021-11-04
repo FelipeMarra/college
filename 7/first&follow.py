@@ -144,7 +144,7 @@
 
 #=> ExprOpc -> OpIgual Rel ExprOpc
 #=> ExprOpc -> ε
-#Follow(ExprOpc) -> {Follow(Expr), Follow(Rel)} -> {; then do ) ==, != id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (}
+#Follow(ExprOpc) -> {Follow(Expr)} -> {; then do )}
 
 
 #=> OpIgual -> ==
@@ -153,7 +153,7 @@
 
 
 #=> Rel -> Adicao RelOpc
-#Follow(Rel) -> {First(ExprOpc) Follow(Expr) Follow(ExprOpc)} -> {==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (} #TODO verificar pergunta feita ao prof
+#Follow(Rel) -> {First(ExprOpc) Follow(Expr) Follow(ExprOpc)} -> {==, != ; then do ) id, integer_const, real_const, TRUE, FALSE, STRING_LITERAL, (} 
 
 
 #=> RelOpc -> OpRel Adicao RelOpc
