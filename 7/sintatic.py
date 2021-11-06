@@ -1,9 +1,42 @@
+#TODO codigo 2 e 3 não funcionam
 from lexic import start, run
 
 fin = start()
 
 tokens_vec = run(fin)
 print("TOKENS:", tokens_vec,"\n")
+
+var_flag = False
+var_count = 0
+symble_table = {}
+
+def insert_on_table(token, name):
+    global var_flag, var_count, symble_table
+    #print("tonken", token,"flag",var_flag,"count",var_count)
+    if(token == "var"):
+        var_flag = True
+        print(symble_table)
+        return
+
+    if(var_flag):
+        #print("IF VarFlag")
+        if(token == "ID"):
+            symble_table[name] = "null"
+            var_count += 1
+            print(symble_table)
+            return
+        if(token =="TWO_POINTS"):
+            var_flag = False
+            print(symble_table)
+            return
+
+    if(var_flag == False and var_count > 0):
+        #print("Varflag false and var_count > 0")
+        for k,v in symble_table.items():
+            if(v == "null"):
+                symble_table[k] = token
+                var_count -= 1
+    print(symble_table)
 
 def match(token):
     global tokens_vec
@@ -12,6 +45,7 @@ def match(token):
         return
     if(token == tokens_vec[0][1]):
         print("match: token",token,"is a match with",tokens_vec[0][1], "\n")
+        insert_on_table(tokens_vec[0][1], tokens_vec[0][0])
         tokens_vec.pop(0)
     else:
         print("match: token", token,"is NOT a match with",tokens_vec[0][1], "\n")
