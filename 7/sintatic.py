@@ -1,4 +1,5 @@
 #TODO codigo 2 e 3 não funcionam
+from re import T
 from lexic import start, run
 
 fin = start()
@@ -6,6 +7,8 @@ fin = start()
 tokens_vec = run(fin)
 print("TOKENS:", tokens_vec,"\n")
 
+exp_flag = False
+exp_list = []
 var_flag = False
 var_count = 0
 symble_table = {}
@@ -38,11 +41,27 @@ def insert_on_table(token, name):
                 var_count -= 1
     print(symble_table)
 
+def verify_redeclaration(token):
+    global symble_table, var_flag
+    if var_flag == True and symble_table.get(token) != None:
+        return True
+    return False
+
+def verify_declaration(token):
+    global symble_table
+    if symble_table.get(token) == None:
+        print("ERRO - Variavel nao declarada")
+        exit()
+
 def match(token):
     global tokens_vec
     if len(tokens_vec) == 0:
         print("match: tokens_vec is empty")
         return
+    if(token == "ID"):
+        if verify_redeclaration(tokens_vec[0][0]):
+            print("ERRO - Variavel redeclarada")
+            exit()
     if(token == tokens_vec[0][1]):
         print("match: token",token,"is a match with",tokens_vec[0][1], "\n")
         insert_on_table(tokens_vec[0][1], tokens_vec[0][0])
@@ -113,13 +132,14 @@ def ComandoSeq():
         Comando()
         ComandoSeq()
 
-# Comando -> ID := Expr ;
+# Comando -> ID := Expr ; 
 # Comando -> if Expr then ComandoSeq end
 # Comando -> while Expr do ComandoSeq end
 # Comando -> print Expr ;
 # Comando -> read ID ;
 def Comando():
     if(tokens_vec[0][1] == "ID"):
+        verify_declaration(tokens_vec[0][0])
         match("ID")
         match("ATR")
         Expr()
@@ -142,14 +162,27 @@ def Comando():
         match("PCOMMA")
     if(tokens_vec[0][1] == "read"):
         match("read")
+        if(tokens_vec[0][1] == "ID"):
+            verify_declaration(tokens_vec[0][0])
         match("ID")
         match("PCOMMA")
 
 # Expr -> Rel ExprOpc
 def Expr():
-    if(tokens_vec[0][1] in ["ID", "INTEGET_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    global exp_flag, exp_list
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+        exp_flag = True
         Rel()
         ExprOpc()
+        if ["TRUE", "FALSE"] in exp_list and ("REAL_CONST" in exp_list or "STRING_LITERAL" in exp_list):
+            print("incompatible types boolean and real or string")
+            exit()
+        
+        if "STRING_LITERAL" in exp_list and ("REAL_CONST" in exp_list or "INTEGER_CONST" in exp_list):
+            print("incompatible types string and boolean, integer or real")
+            exit()
+        exp_flag = False
+
 
 # ExprOpc -> OpIgual Rel ExprOpc
 # ExprOpc -> ε
@@ -167,7 +200,7 @@ def OpIgual():
 
 # Rel -> Adicao RelOpc
 def Rel():
-    if(tokens_vec[0][1] in ["ID", "INTEGET_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
         Adicao()
         RelOpc()
 
@@ -189,7 +222,7 @@ def OpRel():
 
 # Adicao -> Termo AdicaoOpc
 def Adicao():
-    if(tokens_vec[0][1] in ["ID", "INTEGET_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
         Termo()
         AdicaoOpc()
 
@@ -209,7 +242,7 @@ def OpAdicao():
 
 # Termo -> Fator TermoOpc
 def Termo():
-    if(tokens_vec[0][1] in ["ID", "INTEGET_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
         Fator()
         TermoOpc()
 
@@ -227,15 +260,23 @@ def OpMult():
     if(tokens_vec[0][1] in ["MULT", "DIV"]):
         match(tokens_vec[0][1])
 
-# Fator -> ID
-# Fator -> INTEGET_CONST
+# Fator -> ID 
+# Fator -> INTEGER_CONST
 # Fator -> REAL_CONST
 # Fator -> TRUE
 # Fator -> FALSE
 # Fator -> STRING_LITERAL
 # Fator -> ( Expr )
 def Fator():
-    if(tokens_vec[0][1] in ["ID", "INTEGET_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL"]):
+    global exp_flag, exp_list, symble_table
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL"]):
+        if(tokens_vec[0][1] == "ID"):
+            verify_declaration(tokens_vec[0][0])
+        if exp_flag:
+            if tokens_vec[0][1] == "ID":
+                exp_list.append(symble_table[tokens_vec[0][0]])
+            else:
+                exp_list.append(tokens_vec[0][1])
         match(tokens_vec[0][1])
     if(tokens_vec[0][1] == "LBRACKET"):
         match("LBRACKET")
