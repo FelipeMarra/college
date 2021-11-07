@@ -1,4 +1,6 @@
 #TODO codigo 2 e 3 não funcionam
+#TODO erro sintático
+
 from re import T
 from lexic import start, run
 
