@@ -1,61 +1,48 @@
 SAIDA LEXICO: 
 Linha 1 | Lexema: program | Token: program
-Linha 1 | Lexema: calc | Token: ID
+Linha 1 | Lexema: prog | Token: ID
+Linha 1 | Lexema: 2 | Token: INTEGER_CONST
 Linha 1 | Lexema: ; | Token: PCOMMA
 Linha 2 | Lexema: var | Token: var
-Linha 2 | Lexema: y | Token: ID
-Linha 2 | Lexema: , | Token: COMMA
-Linha 2 | Lexema: z | Token: ID
+Linha 2 | Lexema: flag | Token: ID
 Linha 2 | Lexema: : | Token: TWO_POINTS
-Linha 2 | Lexema: real | Token: real
+Linha 2 | Lexema: boolean | Token: boolean
 Linha 2 | Lexema: ; | Token: PCOMMA
 Linha 3 | Lexema: var | Token: var
-Linha 3 | Lexema: x | Token: ID
+Linha 3 | Lexema: cont | Token: ID
 Linha 3 | Lexema: : | Token: TWO_POINTS
-Linha 3 | Lexema: string | Token: string
+Linha 3 | Lexema: integer | Token: integer
 Linha 3 | Lexema: ; | Token: PCOMMA
-Linha 4 | Lexema: var | Token: var
-Linha 4 | Lexema: nome | Token: ID
-Linha 4 | Lexema: , | Token: COMMA
-Linha 4 | Lexema: endereco | Token: ID
-Linha 4 | Lexema: : | Token: TWO_POINTS
-Linha 4 | Lexema: string | Token: string
-Linha 4 | Lexema: ; | Token: PCOMMA
-Linha 5 | Lexema: begin | Token: begin
-Linha 6 | Lexema: x | Token: ID
+Linha 4 | Lexema: begin | Token: begin
+Linha 5 | Lexema: cont | Token: ID
+Linha 5 | Lexema: := | Token: ATR
+Linha 5 | Lexema: 0 | Token: INTEGER_CONST
+Linha 5 | Lexema: ; | Token: PCOMMA
+Linha 6 | Lexema: flag | Token: ID
 Linha 6 | Lexema: := | Token: ATR
-Linha 6 | Lexema: ze | Token: STRING_LITERAL
+Linha 6 | Lexema: true | Token: true
 Linha 6 | Lexema: ; | Token: PCOMMA
-Linha 7 | Lexema: y | Token: ID
-Linha 7 | Lexema: := | Token: ATR
-Linha 7 | Lexema: 2.4 | Token: REAL_CONST
-Linha 7 | Lexema: ; | Token: PCOMMA
-Linha 8 | Lexema: if | Token: if
-Linha 8 | Lexema: x | Token: ID
-Linha 9 | Lexema: then | Token: then
-Linha 9 | Lexema: z | Token: ID
-Linha 9 | Lexema: := | Token: ATR
-Linha 9 | Lexema: ( | Token: LBRACKET
-Linha 9 | Lexema: x | Token: ID
-Linha 9 | Lexema: - | Token: MINUS
-Linha 9 | Lexema: y | Token: ID
-Linha 9 | Lexema: ) | Token: RBRACKET
-Linha 9 | Lexema: ; | Token: PCOMMA
+Linha 7 | Lexema: while | Token: while
+Linha 7 | Lexema: flag | Token: ID
+Linha 7 | Lexema: do | Token: do
+Linha 8 | Lexema: cont | Token: ID
+Linha 8 | Lexema: := | Token: ATR
+Linha 8 | Lexema: cont | Token: ID
+Linha 8 | Lexema: + | Token: PLUS
+Linha 8 | Lexema: 1 | Token: INTEGER_CONST
+Linha 8 | Lexema: ; | Token: PCOMMA
+Linha 9 | Lexema: if | Token: if
+Linha 9 | Lexema: cont | Token: ID
+Linha 9 | Lexema: > | Token: GT
+Linha 9 | Lexema: 10 | Token: INTEGER_CONST
+Linha 10 | Lexema: then | Token: then
+Linha 10 | Lexema: flag | Token: ID
+Linha 10 | Lexema: := | Token: ATR
+Linha 10 | Lexema: false | Token: false
+Linha 10 | Lexema: ; | Token: PCOMMA
 Linha 11 | Lexema: end | Token: end
-Linha 11 | Lexema: nome | Token: ID
-Linha 11 | Lexema: := | Token: ATR
-Linha 11 | Lexema: skdfkm23235FNFOWOF? | Token: STRING_LITERAL
-Linha 11 | Lexema: ; | Token: PCOMMA
-Linha 12 | Lexema: endereco | Token: ID
-Linha 12 | Lexema: := | Token: ATR
-Linha 12 | Lexema: Rua Fulad_2 139, 234 # | Token: STRING_LITERAL
-Linha 12 | Lexema: ; | Token: PCOMMA
+Linha 12 | Lexema: end | Token: end
 Linha 13 | Lexema: end | Token: end
 
 TABELA DE SIMBOLOS: 
-Chave y | Valor: real
-Chave z | Valor: real
-Chave x | Valor: string
-Chave nome | Valor: string
-Chave endereco | Valor: string
 

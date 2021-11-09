@@ -1,6 +1,18 @@
 #TODO codigo 2 e 3 não funcionam
 #TODO erro sintático
 
+# d) Implemente um analisador sintático utilizando o método de descida recursiva. Durante a
+# análise sintática, todos os identificadores (variáveis) declarados no código, devem ser
+# inseridos na tabela de símbolos juntamente com a informação de tipo. A estrutura de
+# dados que será utilizada para implementação da tabela de símbolos é escolha de vocês.
+
+# e) Com base nas informações da tabela de símbolos, implemente três verificações
+# semânticas durante a análise sintática do código fonte: 1. Verificar se uma variável foi
+# declarada; 2. Verificar se uma variável foi redeclarada; e 3. Verificar a compatibilidade
+# de tipos nas expressões. Para a tarefa 3, considere o seguinte:
+# boolean (true ou false) é incompatível com real e string;
+# string é incompatível com boolean (true ou false), integer e real.
+
 from re import T
 from lexic import start, run
 
@@ -13,7 +25,7 @@ def Define_Token(token):
     
     if token == "string":
         return "STRING_LITERAL"
-   
+
     if token == "boolean":
         return "TRUE"
     

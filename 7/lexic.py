@@ -1,51 +1,15 @@
-# TODO: a) e b) estão juntas, pra a) tem q separar o AFD daqui
-# TODO: Verificar erro léxico
-
 # a) Construa um autômato finito determinístico (AFD) para reconhecer todos os lexemas da
 # linguagem P.
-# Os lexemas da linguagem P são os seguintes:
-# BASICS [";",",","+","-","*","/","(",")",'\n','\t',' ']:
-# ;
-# ,
-# +
-# -
-# *
-# /
-# (
-# )
+# Os lexemas da linguagem P são os seguintes: program [a-zA-Z]([a-zA-Z0-9_])* ; begin end
+# var : , boolean integer real string := if then while do print read == != < <= > >= + - * / [0-9]
+# ([0-9])* [0-9]([0-9])*.[0-9]([0-9])* true false ( ) "[a-zA-Z0-9_,;?# ]*"
 
-# NOT BASICS:
-# <
-# <=
-# >
-# >=
-# :
-# :=
-# ==
-# !=
-
-# RESERVED WORDS
-# program
-# begin
-# end
-# var
-# boolean
-# integer
-# real
-# string
-# if
-# then
-# while
-# do
-# print
-# read
-# true
-# false
-
-# [a-zA-Z]([a-zA-Z0-9_])*
-# [0-9]([0-9])*
-# [0-9]([0-9])*.[0-9]([0-9])*
-# "[a-zA-Z0-9_,;?# ]*"
+# b) Implemente um analisador léxico com base no autômato da letra a para reconhecer todos
+# os lexemas da linguagem.
+# Obs: Você deve definir os tokens para todos os lexemas da linguagem. Em outras palavras,
+# definir um token para cada lexema. Alguns nomes de tokens já foram definidos como, por
+# exemplo, integer_const para os números inteiros e real_const para números de ponto
+# flutuante.
 
 # Importacoes
 import argparse
@@ -76,7 +40,9 @@ def log_tokens(tokens):
 
 def log_erro(erro):
     f = open("log.txt", "a")
-    f.write("ERR LEXICO: " + erro + "\n \n")
+    err = "ERR LEXICO: " + erro + "\n \n"
+    print("################################" + err)
+    f.write(err)
 
 RESERVED_WORDS = ["program", "begin", "end", "var", "boolean", "integer", "real",
                 "string", "if", "then", "while", "do", "print", "read", "true", "false"]
@@ -266,6 +232,7 @@ def run(fin):
                     lexeme.clear()
                     state = 0
                 else:
+                    log_erro("Expected Char = after = but char "+ char +" was given")
                     i -= 1
                     state = 0
 
@@ -276,6 +243,7 @@ def run(fin):
                     lexeme.clear()
                     state = 0
                 else:
+                    log_erro("Expected Char = after ! but char "+ char +" was given")
                     i -= 1
                     state = 0
 
