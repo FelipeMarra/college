@@ -4,6 +4,25 @@
 from re import T
 from lexic import start, run
 
+def log_table():
+    global symble_table
+    f = open("log.txt", "a")
+    f.write("TABELA DE SIMBOLOS: \n")
+    for k,v in symble_table.items():
+        f.write("Chave " + str(k) + " | ")
+        f.write("Valor: " + str(v))
+        f.write("\n")
+    f.write("\n")
+    f.close()
+
+def log_erro_semantico(erro):
+    global exp_list
+    f = open("log.txt", "a")
+    err = "ERR SEMANTICO: " + erro + "\n \n"
+    print("################################" + err)
+    print("LIST: " + str(exp_list))
+    f.write(err)
+
 fin = start()
 
 tokens_vec = run(fin)
@@ -52,17 +71,20 @@ def verify_redeclaration(token):
 def verify_declaration(token):
     global symble_table
     if symble_table.get(token) == None:
-        print("ERRO - Variavel nao declarada")
+        err = "Variavel " + str(tokens_vec[0][0]) + " nao declarada na linha " + str(tokens_vec[0][2])
+        log_erro_semantico(err)
         exit()
 
 def match(token):
     global tokens_vec
     if len(tokens_vec) == 0:
         print("match: tokens_vec is empty")
+        log_table()
         return
     if(token == "ID"):
         if verify_redeclaration(tokens_vec[0][0]):
-            print("ERRO - Variavel redeclarada")
+            err = "Variavel " + str(tokens_vec[0][0]) + " redeclarada na linha " + str(tokens_vec[0][2])
+            log_erro_semantico(err)
             exit()
     if(token == tokens_vec[0][1]):
         print("match: token",token,"is a match with",tokens_vec[0][1], "\n")
@@ -79,6 +101,7 @@ def Programa():
         match("PCOMMA")
         Bloco()
     print("program: end of program, tokens_vec:", tokens_vec, "\n")
+    log_table()
 
 # Bloco -> DeclaracaoSeq begin ComandoSeq end
 def Bloco():
@@ -177,11 +200,13 @@ def Expr():
         Rel()
         ExprOpc()
         if ["TRUE", "FALSE"] in exp_list and ("REAL_CONST" in exp_list or "STRING_LITERAL" in exp_list):
-            print("incompatible types boolean and real or string")
+            err = "Incompatible types boolean and real or string | Variavel " + str(tokens_vec[0][0]) + " na linha " + str(tokens_vec[0][2])
+            log_erro_semantico(err)
             exit()
         
         if "STRING_LITERAL" in exp_list and ("REAL_CONST" in exp_list or "INTEGER_CONST" in exp_list):
-            print("incompatible types string and boolean, integer or real")
+            err = "Incompatible types string and boolean, integer or real | Variavel " + str(tokens_vec[0][0]) + " na linha " + str(tokens_vec[0][2])
+            log_erro_semantico(err)
             exit()
         exp_flag = False
 

@@ -57,16 +57,33 @@ def to_str(s):
     # initialization of string to ""
     str1 = ""
 
-    # using join function join the list s by
-    # separating words by str1
+    # using join function join the list s by separating words by str1
     return(str1.join(s))
-    # constants
+
+def log_reset():
+    open('log.txt', 'w').close()
+
+def log_tokens(tokens):
+    f = open("log.txt", "a")
+    f.write("SAIDA LEXICO: \n")
+    for token in tokens:
+        f.write("Linha " + str(token[2]) + " | ")
+        f.write("Lexema: " + str(token[0] + " | "))
+        f.write("Token: " + str(token[1]))
+        f.write("\n")
+    f.write("\n")
+    f.close()
+
+def log_erro(erro):
+    f = open("log.txt", "a")
+    f.write("ERR LEXICO: " + erro + "\n \n")
 
 RESERVED_WORDS = ["program", "begin", "end", "var", "boolean", "integer", "real",
                 "string", "if", "then", "while", "do", "print", "read", "true", "false"]
 
 # command line & file opening
 def start():
+    log_reset()
     ap = argparse.ArgumentParser()
     ap.add_argument("-f", "--file", required=True, help="name of the user")
     args = vars(ap.parse_args())
@@ -274,4 +291,5 @@ def run(fin):
             i += 1
         #print("TOKENS:", tokens)
         line_number += 1
+    log_tokens(tokens)
     return tokens
