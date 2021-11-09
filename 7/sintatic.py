@@ -4,6 +4,25 @@
 from re import T
 from lexic import start, run
 
+def Define_Token(token):
+    if token == "real":
+        return "REAL_CONST"
+    
+    if token == "integer":
+        return "INTEGER_CONST"
+    
+    if token == "string":
+        return "STRING_LITERAL"
+   
+    if token == "boolean":
+        return "TRUE"
+    
+    if token == "true":
+        return "TRUE"
+
+    if token == "false":
+        return "FALSE"
+
 def log_table():
     global symble_table
     f = open("log.txt", "a")
@@ -58,7 +77,7 @@ def insert_on_table(token, name):
         #print("Varflag false and var_count > 0")
         for k,v in symble_table.items():
             if(v == "null"):
-                symble_table[k] = token
+                symble_table[k] = Define_Token(token)
                 var_count -= 1
     print(symble_table)
 
@@ -202,13 +221,18 @@ def Expr():
         if ["TRUE", "FALSE"] in exp_list and ("REAL_CONST" in exp_list or "STRING_LITERAL" in exp_list):
             err = "Incompatible types boolean and real or string | Variavel " + str(tokens_vec[0][0]) + " na linha " + str(tokens_vec[0][2])
             log_erro_semantico(err)
-            exit()
+            exp_flag = False
+            exp_list.clear()
+            return
         
         if "STRING_LITERAL" in exp_list and ("REAL_CONST" in exp_list or "INTEGER_CONST" in exp_list):
             err = "Incompatible types string and boolean, integer or real | Variavel " + str(tokens_vec[0][0]) + " na linha " + str(tokens_vec[0][2])
             log_erro_semantico(err)
-            exit()
+            exp_flag = False
+            exp_list.clear()
+            return
         exp_flag = False
+        exp_list.clear()
 
 
 # ExprOpc -> OpIgual Rel ExprOpc
@@ -302,8 +326,10 @@ def Fator():
         if exp_flag:
             if tokens_vec[0][1] == "ID":
                 exp_list.append(symble_table[tokens_vec[0][0]])
+                #print("###############EXP LIST APEEND", exp_list)
             else:
                 exp_list.append(tokens_vec[0][1])
+                #print("###############EXP LIST APEEND", exp_list)
         match(tokens_vec[0][1])
     if(tokens_vec[0][1] == "LBRACKET"):
         match("LBRACKET")
