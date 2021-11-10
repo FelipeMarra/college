@@ -141,7 +141,7 @@ def run(fin):
                     continue
 
             if state == 1:
-                if re.match(r'[a-zA-Z]([a-zA-Z0-9_])*', char):
+                if re.match(r'[a-zA-Z0-9_]', char):
                     lexeme.append(char)
                 else:
                     #print("CHEGOU NO ELSE")

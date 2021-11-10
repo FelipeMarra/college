@@ -1,6 +1,3 @@
-#TODO codigo 2 e 3 não funcionam
-#TODO erro sintático
-
 # d) Implemente um analisador sintático utilizando o método de descida recursiva. Durante a
 # análise sintática, todos os identificadores (variáveis) declarados no código, devem ser
 # inseridos na tabela de símbolos juntamente com a informação de tipo. A estrutura de
@@ -27,13 +24,13 @@ def Define_Token(token):
         return "STRING_LITERAL"
 
     if token == "boolean":
-        return "TRUE"
+        return "boolean"
     
     if token == "true":
-        return "TRUE"
+        return "true"
 
     if token == "false":
-        return "FALSE"
+        return "false"
 
 def log_table():
     global symble_table
@@ -51,7 +48,13 @@ def log_erro_semantico(erro):
     f = open("log.txt", "a")
     err = "ERR SEMANTICO: " + erro + "\n \n"
     print("################################" + err)
-    print("LIST: " + str(exp_list))
+    f.write(err)
+
+def log_erro_sintatico(erro):
+    global exp_list
+    f = open("log.txt", "a")
+    err = "ERR SINTATICO: " + erro + "\n \n"
+    print("################################" + err)
     f.write(err)
 
 fin = start()
@@ -71,7 +74,6 @@ def insert_on_table(token, name):
     if(token == "var"):
         var_flag = True
         print(symble_table)
-        return
 
     if(var_flag):
         #print("IF VarFlag")
@@ -110,7 +112,6 @@ def match(token):
     global tokens_vec
     if len(tokens_vec) == 0:
         print("match: tokens_vec is empty")
-        log_table()
         return
     if(token == "ID"):
         if verify_redeclaration(tokens_vec[0][0]):
@@ -122,7 +123,7 @@ def match(token):
         insert_on_table(tokens_vec[0][1], tokens_vec[0][0])
         tokens_vec.pop(0)
     else:
-        print("match: token", token,"is NOT a match with",tokens_vec[0][1], "\n")
+        log_erro_sintatico("match: token " + str(token) +" is NOT a match with " + str(tokens_vec[0][1]) + "\n")
 
 # Programa -> program ID ; Bloco
 def Programa():
@@ -184,6 +185,8 @@ def Type():
 # ComandoSeq -> Comando ComandoSeq
 # ComandoSeq -> ε
 def ComandoSeq():
+    if len(tokens_vec) == 0:
+        return
     if(tokens_vec[0][1] in ["ID", "if", "while", "print", "read"]):
         Comando()
         ComandoSeq()
@@ -200,40 +203,46 @@ def Comando():
         match("ATR")
         Expr()
         match("PCOMMA")
+        return
     if(tokens_vec[0][1] == "if"):
         match("if")
         Expr()
         match("then")
         ComandoSeq()
         match("end")
+        return
     if(tokens_vec[0][1] == "while"):
         match("while")
         Expr()
         match("do")
         ComandoSeq()
         match("end")
+        return
     if(tokens_vec[0][1] == "print"):
         match("print")
         Expr()
         match("PCOMMA")
+        return
     if(tokens_vec[0][1] == "read"):
         match("read")
         if(tokens_vec[0][1] == "ID"):
             verify_declaration(tokens_vec[0][0])
         match("ID")
         match("PCOMMA")
+        return
 
 # Expr -> Rel ExprOpc
 def Expr():
     global exp_flag, exp_list
-    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "true", "false", "STRING_LITERAL", "LBRACKET"]):
         exp_flag = True
         Rel()
         ExprOpc()
-        if ["TRUE", "FALSE"] in exp_list and ("REAL_CONST" in exp_list or "STRING_LITERAL" in exp_list):
+        if ["true", "false"] in exp_list and ("REAL_CONST" in exp_list or "STRING_LITERAL" in exp_list):
             err = "Incompatible types boolean and real or string | Variavel " + str(tokens_vec[0][0]) + " na linha " + str(tokens_vec[0][2])
             log_erro_semantico(err)
             exp_flag = False
+            print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ LIST \n" + str(exp_list))
             exp_list.clear()
             return
         
@@ -241,9 +250,11 @@ def Expr():
             err = "Incompatible types string and boolean, integer or real | Variavel " + str(tokens_vec[0][0]) + " na linha " + str(tokens_vec[0][2])
             log_erro_semantico(err)
             exp_flag = False
+            print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ LIST \n" + str(exp_list))
             exp_list.clear()
             return
         exp_flag = False
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ LIST \n" + str(exp_list))
         exp_list.clear()
 
 
@@ -263,7 +274,7 @@ def OpIgual():
 
 # Rel -> Adicao RelOpc
 def Rel():
-    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "true", "false", "STRING_LITERAL", "LBRACKET"]):
         Adicao()
         RelOpc()
 
@@ -285,7 +296,7 @@ def OpRel():
 
 # Adicao -> Termo AdicaoOpc
 def Adicao():
-    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "true", "false", "STRING_LITERAL", "LBRACKET"]):
         Termo()
         AdicaoOpc()
 
@@ -305,7 +316,7 @@ def OpAdicao():
 
 # Termo -> Fator TermoOpc
 def Termo():
-    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL", "LBRACKET"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "true", "false", "STRING_LITERAL", "LBRACKET"]):
         Fator()
         TermoOpc()
 
@@ -332,16 +343,16 @@ def OpMult():
 # Fator -> ( Expr )
 def Fator():
     global exp_flag, exp_list, symble_table
-    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "TRUE", "FALSE", "STRING_LITERAL"]):
+    if(tokens_vec[0][1] in ["ID", "INTEGER_CONST", "REAL_CONST", "true", "false", "STRING_LITERAL"]):
         if(tokens_vec[0][1] == "ID"):
             verify_declaration(tokens_vec[0][0])
         if exp_flag:
             if tokens_vec[0][1] == "ID":
                 exp_list.append(symble_table[tokens_vec[0][0]])
-                #print("###############EXP LIST APEEND", exp_list)
+                print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ LIST \n" + str(exp_list))
             else:
                 exp_list.append(tokens_vec[0][1])
-                #print("###############EXP LIST APEEND", exp_list)
+                print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ LIST \n" + str(exp_list))
         match(tokens_vec[0][1])
     if(tokens_vec[0][1] == "LBRACKET"):
         match("LBRACKET")

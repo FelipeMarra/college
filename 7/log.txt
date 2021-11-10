@@ -1,7 +1,6 @@
 SAIDA LEXICO: 
 Linha 1 | Lexema: program | Token: program
-Linha 1 | Lexema: prog | Token: ID
-Linha 1 | Lexema: 2 | Token: INTEGER_CONST
+Linha 1 | Lexema: prog2 | Token: ID
 Linha 1 | Lexema: ; | Token: PCOMMA
 Linha 2 | Lexema: var | Token: var
 Linha 2 | Lexema: flag | Token: ID
@@ -11,7 +10,7 @@ Linha 2 | Lexema: ; | Token: PCOMMA
 Linha 3 | Lexema: var | Token: var
 Linha 3 | Lexema: cont | Token: ID
 Linha 3 | Lexema: : | Token: TWO_POINTS
-Linha 3 | Lexema: integer | Token: integer
+Linha 3 | Lexema: string | Token: string
 Linha 3 | Lexema: ; | Token: PCOMMA
 Linha 4 | Lexema: begin | Token: begin
 Linha 5 | Lexema: cont | Token: ID
@@ -44,5 +43,11 @@ Linha 11 | Lexema: end | Token: end
 Linha 12 | Lexema: end | Token: end
 Linha 13 | Lexema: end | Token: end
 
+ERR SEMANTICO: Incompatible types string and boolean, integer or real | Variavel ; na linha 8
+ 
+ERR SEMANTICO: Incompatible types string and boolean, integer or real | Variavel then na linha 10
+ 
 TABELA DE SIMBOLOS: 
+Chave flag | Valor: boolean
+Chave cont | Valor: STRING_LITERAL
 
