@@ -19,7 +19,7 @@ pos_size = len(all_positive_tweets)
 neg_size = len(all_negative_tweets)
 ys = np.append(np.ones(pos_size), np.zeros(neg_size))
 
-########################## equal to cousera ###################################
+########################## dataset ###################################
 test_pos = all_positive_tweets[4000:]
 train_pos = all_positive_tweets[:4000]
 test_neg = all_negative_tweets[4000:]
