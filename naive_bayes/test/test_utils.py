@@ -14,9 +14,7 @@ def get_dataset():
     global pos_size
     global neg_size
 
-    nltk.download('twitter_samples')
-
-    corpora_root = 'C:/Users/felip/AppData/Roaming/nltk_data/corpora/twitter_samples/'
+    corpora_root = '../../corpora/twitter_samples/'
 
     all_positive_tweets = twitter_samples.strings(corpora_root + 'positive_tweets.json')
     all_negative_tweets = twitter_samples.strings(corpora_root + 'negative_tweets.json')

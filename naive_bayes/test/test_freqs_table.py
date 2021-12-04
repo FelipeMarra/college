@@ -1,8 +1,8 @@
+import sys
+sys.path.append('../../naive_bayes/')
 import numpy as np
 from test_utils import get_random_tweet
 from test_utils import get_dataset
-import sys
-sys.path.append('../what-sentiment-bot/')
 from ml.naive_bayes.db.freqs_table.freqs_table import FreqsTable
 
 get_dataset()

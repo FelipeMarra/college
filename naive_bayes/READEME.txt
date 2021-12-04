@@ -1,0 +1,3 @@
+É nescessário instalar as dependências descritas no requirementes.txt. 
+Recomendamos que isto seja feito dentro de um ambiente virtual.
+
