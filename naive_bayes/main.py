@@ -4,7 +4,6 @@ from ml.naive_bayes.predict import predict
 from ml.naive_bayes.test import test_dataset
 
 def main():
-    #download necessary package data
     nltk.download('stopwords')
     #menu
     option = -2
