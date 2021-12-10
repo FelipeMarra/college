@@ -10,3 +10,5 @@ Comando para instalar os requerimentos
 pip install -r requirements.txt
 
 Para rodar o programa basta rodar a função main.py e a partir disso seguir os passos do menu apresentado.
+
+A pasta datasets contem as intruções para baixar o dataset usado
