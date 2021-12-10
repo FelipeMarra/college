@@ -6,7 +6,7 @@ from ml.naive_bayes.db.freqs_table.freqs_table import FreqsTable
 
 
 def test_dataset():
-    corpora_root = '../../../datasets/corpora/twitter_samples/'
+    corpora_root = '../../datasets/corpora/twitter_samples/'
 
     all_positive_tweets = twitter_samples.strings(corpora_root + 'positive_tweets.json')
     all_negative_tweets = twitter_samples.strings(corpora_root + 'negative_tweets.json')

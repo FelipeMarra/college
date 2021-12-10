@@ -3,7 +3,7 @@ import nltk
 from nltk.corpus import twitter_samples  
 from db.freqs_table.freqs_table import FreqsTable
 
-corpora_root = '../../../datasets/corpora/twitter_samples/'
+corpora_root = '../../datasets/corpora/twitter_samples/'
 
 all_positive_tweets = twitter_samples.strings(corpora_root + 'positive_tweets.json')
 all_negative_tweets = twitter_samples.strings(corpora_root + 'negative_tweets.json')
