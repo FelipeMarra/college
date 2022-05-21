@@ -82,7 +82,7 @@ class TagStore(metaclass=SingletonMeta):
         
         return f"Message sent!"
 
-
+all_subs = []
 
 #Create Server and return server socket
 def create_server():
@@ -98,9 +98,26 @@ def create_server():
     except:
         raise Exception("Can't create server")
 
+def kill_server():
+    for sub in all_subs:
+        try:
+            sub.send("##die".encode())
+        except:
+            print("Error sending ##die")
+        try:
+            sub.close()
+        except:
+            print("trying to close")
+
+    serverSocket.close()
+    exit()
+
 def process_message(message, client_socket):
     tagStore = TagStore()
 
+    if message == "##kill":
+        kill_server()
+    
     if message[0] == "+":
         tag_name = message[1:]
         res = tagStore.add_tag(tag_name, client_socket)
@@ -125,7 +142,7 @@ def new_connection(clientSocket, addr):
         if not received:
             print(f"Closing connection with {addr}")
             clientSocket.close()
-            return
+            quit()
 
         sentenceSize = unpack("!I", received)[0]
         
@@ -139,14 +156,19 @@ def new_connection(clientSocket, addr):
 
         print(f"All tags for now: {(*tagStore.tagsMap,)}")
 
-def handle_connextions(serverSocket):
+def handle_connections(serverSocket):
     while True:
-        clientSocket, addr = serverSocket.accept()
+        try:
+            clientSocket, addr = serverSocket.accept()
+        except:
+            print("Error accepting")
+            quit()
+
+        all_subs.append(clientSocket)
 
         new_trhead = threading.Thread(target=new_connection, args=(clientSocket, addr))
-
         new_trhead.start()
 
 if __name__ == "__main__":
     serverSocket = create_server()
-    handle_connextions(serverSocket)
+    handle_connections(serverSocket)

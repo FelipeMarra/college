@@ -4,7 +4,6 @@ from struct import *
 import threading
 import string
 import sys
-from time import sleep
 
 file, server_ip, server_port = sys.argv
 
@@ -14,7 +13,7 @@ MESSAGE_MAX_SIZE = 500
 def connect_with_server():
     try:
         clientSocket = socket(AF_INET, SOCK_STREAM, 0)
-        clientSocket.settimeout(15)
+        clientSocket.settimeout(5)
         clientSocket.connect((server_ip, int(server_port)))
         clientSocket.settimeout(None)
         return clientSocket
@@ -31,38 +30,47 @@ def message_is_valid(message):
     return True
 
 #Sends a message to the server
-def send_message(message:str, clientSocket:socket):
-    if(message_is_valid(message)):
-        try:
-            #send sentence size
-            #TODO verify size, 1 letter == 1 byte?
-            clientSocket.send(pack("!I", len(message)))
-            #send sentence
-            clientSocket.send(message.encode())
-        except:
-            raise Exception("Error sending message")
+def send_message(clientSocket:socket):
+    while True:
+        message = input("Message: ")
+        if(message):
+            if(message_is_valid(message)):
+                try:
+                    #send sentence size
+                    #TODO verify size, 1 letter == 1 byte?
+                    clientSocket.send(pack("!I", len(message)))
+                    #send sentence
+                    clientSocket.send(message.encode())
+                except:
+                    print("Error sending message")
+                    clientSocket.close()
+                    quit()
+        else:
+            #if theres no message
+            clientSocket.close()
+            quit()
 
 def receive_message(clientSocket):
     while True:
         try:
-            #receive answer
-            server_res = clientSocket.recv(int(server_port))
-            print("Server Response: ", server_res.decode())
-            print()
+            server_res = clientSocket.recv(int(server_port)).decode()
         except:
-            raise Exception("Error receiving message")
+            print("Error receiving message")
+            clientSocket.close()
+            quit()
+
+        #print(server_res)
+        if server_res == "##die":
+            print("Server was killed, press enter to exit")
+            clientSocket.close()
+            quit()
+        else:
+            print("Server Response: ", server_res.decode())
 
 def listen_user_input(clientSocket):
-    #While theres a user input
-    message = "init"
-    while message:
-        message = input("Message: ")
-        
-        #send message in a new thread
-        new_thread = threading.Thread(target=send_message, args=(message, clientSocket))
-        new_thread.start()
-    
-    clientSocket.close()
+    #send message in a new thread
+    new_thread = threading.Thread(target=send_message, args=(clientSocket, ))
+    new_thread.start()
 
 def listem_server(clientSocket):
     new_thread = threading.Thread(target=receive_message, args=(clientSocket,))
