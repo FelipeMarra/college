@@ -65,7 +65,7 @@ def receive_message(clientSocket):
             clientSocket.close()
             quit()
         else:
-            print("Server Response: ", server_res.decode())
+            print("Server Response: ", server_res)
 
 def listen_user_input(clientSocket):
     #send message in a new thread
