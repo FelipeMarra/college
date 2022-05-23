@@ -1,8 +1,8 @@
 from concurrent.futures import process
 from socket import *
 from struct import *
-import sys
 import threading
+import sys
 import re
 
 #Metaclass used to make the TagStore a Singleton
@@ -19,20 +19,16 @@ class SingletonMeta(type):
             cls._instances[cls] = instance
         return cls._instances[cls]
 
-# class Client:
-#     def __init__(self, addr) -> None:
-#         self.addr = addr
-
 #A tag is have a name and the users that are subscribed to it
 #It handles the subscriptions sending
 class Tag:
-    def __init__(self, name: str, sub_clients: list) -> None:
+    def __init__(self, name: str, sub_clients: list):
         self.name = name
         self. sub_clients = sub_clients
 
 #A class that stores an controlls whos in the tags
 class TagStore(metaclass=SingletonMeta):
-    def __init__(self) -> None:
+    def __init__(self):
         self.tagsMap = {}
 
     def tags_names(self):
@@ -82,93 +78,99 @@ class TagStore(metaclass=SingletonMeta):
         
         return f"Message sent!"
 
-all_subs = []
+class Server:
+    def __init__(self):
+        self.all_subs = []
+        #self.all_processes = []
+        self.serverSocket = None
 
-#Create Server and return server socket
-def create_server():
-    file, server_port = sys.argv
-    try:
-        server_socket = socket(AF_INET, SOCK_STREAM)
-        server_socket.bind(("", int(server_port)))
-        server_socket.listen(1)
-        print(f"Server ready at port {server_port}, {gethostbyname(gethostname())}")
-        print()
-        server_socket.getsockname()
-        return server_socket;
-    except:
-        raise Exception("Can't create server")
-
-def kill_server():
-    for sub in all_subs:
+    #Create Server and return server socket
+    def start(self):
+        file, server_port = sys.argv
         try:
-            sub.send("##die".encode())
+            server_socket = socket(AF_INET, SOCK_STREAM)
+            server_socket.bind(("", int(server_port)))
+            server_socket.listen(1)
+            print(f"Server ready at port {server_port}, {gethostbyname(gethostname())}")
+            print()
+
+            self.serverSocket = server_socket;
+
+            self.handle_connections()
         except:
-            print("Error sending ##die")
-        try:
-            sub.close()
-        except:
-            print("trying to close")
+            raise Exception("Can't create server")
 
-    serverSocket.close()
-    exit()
+    def handle_connections(self):
+        while True:
+            try:
+                clientSocket, addr = self.serverSocket.accept()
+            except:
+                print("Error accepting")
+                quit()
 
-def process_message(message, client_socket):
-    tagStore = TagStore()
+            self.all_subs.append(clientSocket)
+            
+            new_thread = threading.Thread(target=self.new_connection, args=(clientSocket, addr))
+            new_thread.start()
 
-    if message == "##kill":
-        kill_server()
-    
-    if message[0] == "+":
-        tag_name = message[1:]
-        res = tagStore.add_tag(tag_name, client_socket)
-        return res 
+    def new_connection(self, clientSocket, addr):
+        tagStore = TagStore()
 
-    if message[0] == "-":
-        tag_name = message[1:]
-        res = tagStore.remove_user_from_tag(tag_name, client_socket)
+        while True:
+            received = clientSocket.recv(4)
+
+            if not received:
+                print(f"Closing connection with {addr}")
+                clientSocket.close()
+                quit()
+
+            sentenceSize = unpack("!I", received)[0]
+            
+            client_message = clientSocket.recv(sentenceSize).decode()
+
+            print(f"Received from {addr}: {client_message}")
+
+            result = self.process_message(client_message, clientSocket)
+            
+            clientSocket.send(result.encode())
+
+            print(f"All tags for now: {(*tagStore.tagsMap,)}")
+
+    def process_message(self, message, client_socket):
+        tagStore = TagStore()
+
+        if message == "##kill":
+            self.suicide()
+        
+        if message[0] == "+":
+            tag_name = message[1:]
+            res = tagStore.add_tag(tag_name, client_socket)
+            return res 
+
+        if message[0] == "-":
+            tag_name = message[1:]
+            res = tagStore.remove_user_from_tag(tag_name, client_socket)
+            return res
+
+        #get all tags
+        tags = [t[1:] for t in re.findall("#\w+", message)]
+        res = tagStore.send_to_subs(tags, message)
         return res
 
-    #get all tags
-    tags = [t[1:] for t in re.findall("#\w+", message)]
-    res = tagStore.send_to_subs(tags, message)
-    return res
+    def suicide(self):
+        for sub in self.all_subs:
 
-def new_connection(clientSocket, addr):
-    tagStore = TagStore()
-    
-    while True:
-        received = clientSocket.recv(4)
+            sub.send("##die".encode())
 
-        if not received:
-            print(f"Closing connection with {addr}")
-            clientSocket.close()
-            quit()
+            try:
+                sub.close()
+            except:
+                print("Error trying to close")
 
-        sentenceSize = unpack("!I", received)[0]
-        
-        client_message = clientSocket.recv(sentenceSize).decode()
+        self.serverSocket.close()
+        exit()
 
-        print(f"Received from {addr}: {client_message}")
-
-        result = process_message(client_message, clientSocket)
-        
-        clientSocket.send(result.encode())
-
-        print(f"All tags for now: {(*tagStore.tagsMap,)}")
-
-def handle_connections(serverSocket):
-    while True:
-        try:
-            clientSocket, addr = serverSocket.accept()
-        except:
-            print("Error accepting")
-            quit()
-
-        all_subs.append(clientSocket)
-
-        new_trhead = threading.Thread(target=new_connection, args=(clientSocket, addr))
-        new_trhead.start()
 
 if __name__ == "__main__":
-    serverSocket = create_server()
-    handle_connections(serverSocket)
+    server = Server()
+    server.start()
