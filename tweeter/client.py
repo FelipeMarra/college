@@ -25,8 +25,7 @@ def message_is_valid(message):
         print("Invalid message: Message contains not ASCII letters")
         return False
     if not(any(c in ("#") for c in message)) and message[0] != "-" and message[0] != "+":
-        print("Invalid message: Message is not tag-related. Stop saying bullshit!")
-        return False
+        print("CAUTION: Message is not tag-related!")
     return True
 
 #Sends a message to the server
@@ -35,10 +34,15 @@ def send_message(clientSocket:socket):
         message = input("Message: ")
         if(message):
             if(message_is_valid(message)):
+                #send sentence size
+                message_size = len(message)
+                if message_size > MESSAGE_MAX_SIZE:
+                    print(f"Message Overflow")
+                    clientSocket.close()
+                    quit()
+
                 try:
-                    #send sentence size
-                    #TODO verify size, 1 letter == 1 byte?
-                    clientSocket.send(pack("!I", len(message)))
+                    clientSocket.send(pack("!I", message_size))
                     #send sentence
                     clientSocket.send(message.encode())
                 except:

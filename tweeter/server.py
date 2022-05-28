@@ -5,6 +5,8 @@ import threading
 import sys
 import re
 
+MESSAGE_MAX_SIZE = 500
+
 #Metaclass used to make the TagStore a Singleton
 class SingletonMeta(type):
     _instances = {}
@@ -19,14 +21,13 @@ class SingletonMeta(type):
             cls._instances[cls] = instance
         return cls._instances[cls]
 
-#A tag is have a name and the users that are subscribed to it
-#It handles the subscriptions sending
+#A tag have a name and the users that are subscribed to it
 class Tag:
     def __init__(self, name: str, sub_clients: list):
         self.name = name
         self. sub_clients = sub_clients
 
-#A class that stores an controlls whos in the tags
+#A class that stores and controlls whos in the tags
 class TagStore(metaclass=SingletonMeta):
     def __init__(self):
         self.tagsMap = {}
@@ -48,7 +49,7 @@ class TagStore(metaclass=SingletonMeta):
         else:
             new_tag = Tag(name=tag_name, sub_clients=[client_socket])
             self.tagsMap[tag_name] = new_tag
-            return f"Created and Subscribed to Tag {tag_name}"
+            return f"+{tag_name}"
 
     def remove_user_from_tag(self, tag_name: str, client_socket: socket):
         if not tag_name in self.tagsMap:
@@ -63,7 +64,7 @@ class TagStore(metaclass=SingletonMeta):
         if len(self.tagsMap[tag_name].sub_clients) == 0:
             self.tagsMap.pop(tag_name)
 
-        return f"Unsubscribed from {tag_name}"
+        return f"-{tag_name}"
 
     def send_to_subs(self, tags: list, message: str):
         subs = set()
@@ -74,14 +75,16 @@ class TagStore(metaclass=SingletonMeta):
             subs.update(self.tagsMap[tag_name].sub_clients)
         
         for sub in subs:
-            sub.send(message.encode())
-        
+            try:
+                sub.send(message.encode())
+            except:
+                print(f"Error sending to {sub}")
+
         return f"Message sent!"
 
 class Server:
     def __init__(self):
         self.all_subs = []
-        #self.all_processes = []
         self.serverSocket = None
 
     #Create Server and return server socket
@@ -110,38 +113,77 @@ class Server:
 
             self.all_subs.append(clientSocket)
             
-            new_thread = threading.Thread(target=self.new_connection, args=(clientSocket, addr))
+            new_thread = threading.Thread(target=self.listen_client, args=(clientSocket, addr))
             new_thread.start()
 
-    def new_connection(self, clientSocket, addr):
+    def listen_client(self, client_socket, addr):
         tagStore = TagStore()
+
+        mounting_message = ""
 
         while True:
-            received = clientSocket.recv(4)
+            received = client_socket.recv(4)
 
             if not received:
-                print(f"Closing connection with {addr}")
-                clientSocket.close()
+                print(f"Closing connection with {addr}: Client Disconnected")
+                client_socket.close()
                 quit()
 
-            sentenceSize = unpack("!I", received)[0]
-            
-            client_message = clientSocket.recv(sentenceSize).decode()
+            received_message_size = unpack("!I", received)[0]
 
-            print(f"Received from {addr}: {client_message}")
+            if received_message_size > MESSAGE_MAX_SIZE:
+                print(f"Closing connection with {addr}: Message Overflow")
+                client_socket.close()
+                quit()
 
-            result = self.process_message(client_message, clientSocket)
-            
-            clientSocket.send(result.encode())
 
-            print(f"All tags for now: {(*tagStore.tagsMap,)}")
+            received_message = client_socket.recv(received_message_size).decode()
 
-    def process_message(self, message, client_socket):
-        tagStore = TagStore()
+            by_n_messages = received_message.split("\\n")
 
+            for split_message in by_n_messages:
+                #cheack if to kill
+                if self.process_kill(received_message):
+                    quit()
+
+
+                #check if it is to process + and -
+                add_sub_res = self.process_add_subtract(split_message, client_socket)
+
+                if add_sub_res:
+                    client_socket.send(add_sub_res.encode())
+                    print(f"All tags for now: {(*tagStore.tagsMap,)}")
+                    #ignore possible mouting message
+                    mounting_message = ""
+                    continue
+                
+
+                mounting_message = f"{mounting_message} {split_message}"
+
+                #if theres no \n, continue to receive the rest of the message
+                if not split_message:
+                    #otherwise it is suposed to be a finalized # message
+                    print(f"Finalized Message from {addr}: {mounting_message}")
+                    result = self.process_hashtag(mounting_message)
+
+                    client_socket.send(result.encode())
+
+                    mounting_message = ""
+                else:
+                    print(f"Mounting Message from {addr}: {mounting_message}")
+
+    def process_kill(self, message):
         if message == "##kill":
             self.suicide()
-        
+
+        return ""
+
+    def process_add_subtract(self, message, client_socket):
+        tagStore = TagStore()
+
+        if not message:
+            return ""
+
         if message[0] == "+":
             tag_name = message[1:]
             res = tagStore.add_tag(tag_name, client_socket)
@@ -151,6 +193,12 @@ class Server:
             tag_name = message[1:]
             res = tagStore.remove_user_from_tag(tag_name, client_socket)
             return res
+        
+        return ""
+
+
+    def process_hashtag(self, message):
+        tagStore = TagStore()
 
         #get all tags
         tags = [t[1:] for t in re.findall("#\w+", message)]
